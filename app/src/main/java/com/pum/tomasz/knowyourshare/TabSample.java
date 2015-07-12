@@ -3,6 +3,7 @@ package com.pum.tomasz.knowyourshare;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,17 +16,31 @@ import android.widget.TextView;
  */
 public class TabSample extends TabActivity {
 	/** Called when the activity is first created. */
-	
+
+    public final static String TAG ="Tomek";
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		setTabs() ;
+
+        Log.d(TAG, "Called on create on tabs");
+
+        setTabs() ;
 	}
+
+
+    @Override
+    public void onBackPressed() {
+        // Called by children
+        Log.d(TAG, "Back called");
+        //View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+
+    }
+
 	private void setTabs()
 	{
 		addTab("Home", R.drawable.tab_home, ArrowsActivity.class);
 		addTab("Search", R.drawable.tab_search, OptionsActivity.class);
-		
 		addTab("Home", R.drawable.tab_home, ArrowsActivity.class);
 
 	}
