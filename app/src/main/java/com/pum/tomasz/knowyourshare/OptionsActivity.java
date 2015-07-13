@@ -10,6 +10,9 @@ import android.util.Log;
  *
  */
 public class OptionsActivity extends Activity {
+
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.optionspage);
