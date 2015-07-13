@@ -11,14 +11,41 @@
         android:background="@drawable/app_background"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="9"
         android:orientation="vertical"/>
 
     <LinearLayout
         android:background="@drawable/tab_focus"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:src="@drawable/tab_home"
+            android:clickable="false"
+            android:background="@drawable/tab_indicator"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/home_button"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:src="@drawable/tab_products"
+            android:background="@drawable/tab_indicator"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/products_button"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:src="@drawable/tab_settings"
+            android:background="@drawable/tab_indicator"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/settings_button"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 
 </LinearLayout>
