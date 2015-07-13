@@ -1,23 +1,34 @@
 package com.pum.tomasz.knowyourshare;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
 
-public class ProductsActivity extends ActionBarActivity {
+public class ProductsActivity extends Activity {
 
-    private ImageButton productsImageButton;
-
+    TabManager tabManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
-        initializeTab();
+        Log.d(Utilities.TAG, "ProductsActivity onCreate called");
+
+        TabManager.blockTab((ImageButton) findViewById(R.id.products_button));
+        tabManager = new TabManager(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        TabManager.blockTab((ImageButton) findViewById(R.id.products_button));
+        Log.d(Utilities.TAG, "ProductsActivity onResume called");
     }
 
     @Override
@@ -42,9 +53,5 @@ public class ProductsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeTab(){
-        productsImageButton = (ImageButton)findViewById(R.id.products_button);
-        productsImageButton.setPressed(true);
-    }
 
 }

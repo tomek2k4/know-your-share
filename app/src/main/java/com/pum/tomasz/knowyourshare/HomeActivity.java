@@ -2,30 +2,31 @@ package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 
 
 public class HomeActivity extends Activity {
 
-    private ImageButton homeImageButton;
+    TabManager tabManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        initializeTab();
-    }
+        Log.d(Utilities.TAG,"HomeActivity onCreate called");
 
-    private void initializeTab(){
-        homeImageButton = (ImageButton)findViewById(R.id.home_button);
-        homeImageButton.setPressed(true);
+        TabManager.blockTab((ImageButton) findViewById(R.id.home_button));
+        tabManager = new TabManager(this);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        initializeTab();
+        TabManager.blockTab((ImageButton) findViewById(R.id.home_button));
+
+        Log.d(Utilities.TAG, "HomeActivity onResume called");
     }
 }
