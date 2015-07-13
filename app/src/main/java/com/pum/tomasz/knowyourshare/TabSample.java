@@ -33,7 +33,13 @@ public class TabSample extends TabActivity {
     public void onBackPressed() {
         // Called by children
         Log.d(TAG, "Back called");
-        //View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+
+        Log.d("Tomek", "Called from " + this.getParent().getLocalClassName());
+
+        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+
+
+
 
     }
 
@@ -42,7 +48,6 @@ public class TabSample extends TabActivity {
 		addTab("Home", R.drawable.tab_home, ArrowsActivity.class);
 		addTab("Search", R.drawable.tab_search, OptionsActivity.class);
 		addTab("Home", R.drawable.tab_home, ArrowsActivity.class);
-
 	}
 	
 	private void addTab(String labelId, int drawableId, Class<?> c)
