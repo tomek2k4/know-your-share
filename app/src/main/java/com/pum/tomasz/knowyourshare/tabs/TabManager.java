@@ -81,32 +81,14 @@ public class TabManager implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.home_button){
-            Log.d(Utilities.TAG, "Clicked on home button");
-            blockTab((ImageButton) v);
-            unblockTab((ImageButton) activity.findViewById(R.id.products_button));
-            unblockTab((ImageButton) activity.findViewById(R.id.settings_button));
-
-        }else if(v.getId() == R.id.products_button){
-            Log.d(Utilities.TAG, "Clicked on products button");
-            unblockTab((ImageButton) activity.findViewById(R.id.home_button));
-            blockTab((ImageButton) v);
-            unblockTab((ImageButton) activity.findViewById(R.id.settings_button));
-
-        }else if(v.getId() == R.id.settings_button){
-            Log.d(Utilities.TAG, "Clicked on settings button");
-            unblockTab((ImageButton) activity.findViewById(R.id.home_button));
-            unblockTab((ImageButton) activity.findViewById(R.id.products_button));
-            blockTab((ImageButton) v);
-        }
-
         TabInfo newTab = this.mapTabInfo.get(v.getId());
         if (mLastTab != newTab) {
-            Log.d(Utilities.TAG, "different tab clicked,block clicked tab");
-
+            blockTab((ImageButton) v);
+            Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
             FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
             if (mLastTab != null) {
-//                unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
+                unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
+                Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
                 if (mLastTab.getFragment() != null) {
                     ft.detach(mLastTab.getFragment());
                 }
@@ -137,14 +119,12 @@ public class TabManager implements View.OnClickListener{
     }
 
     private void unblockTab(ImageButton imageButton) {
-        imageButton.setPressed(false);
-        imageButton.setClickable(true);
+        imageButton.setSelected(false);
     }
 
 
     private static void blockTab(ImageButton imageButton){
-        imageButton.setClickable(false);
-        imageButton.setPressed(true);
+        imageButton.setSelected(true);
     }
 
 }
