@@ -5,5 +5,5 @@ package com.pum.tomasz.knowyourshare;
  */
 public class Utilities {
 
-    final static String TAG = "Tomek";
+    public final static String TAG = "Tomek";
 }

@@ -7,23 +7,17 @@
     android:orientation="vertical"
     >
 
-    <fragment
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/main_panel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_weight="9"
-        class="com.pum.tomasz.knowyourshare.MainPanelFragment"/>
+        android:background="@android:color/black"
+        />
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/side_panel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_weight="1"
-        class="com.pum.tomasz.knowyourshare.TabsPanelFragment"/>
+    <include layout="@layout/tabs_panel"/>
 
 
 </LinearLayout>
