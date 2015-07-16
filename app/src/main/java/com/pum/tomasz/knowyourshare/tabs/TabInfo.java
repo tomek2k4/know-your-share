@@ -1,6 +1,6 @@
 package com.pum.tomasz.knowyourshare.tabs;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
 /**

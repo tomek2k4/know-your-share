@@ -1,9 +1,9 @@
 package com.pum.tomasz.knowyourshare.tabs;
 
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -68,10 +68,10 @@ public class TabManager implements View.OnClickListener{
         // Check to see if we already have a fragment for this tab, probably
         // from a previously saved state.  If so, deactivate it, because our
         // initial state is that a tab isn't shown.
-        tabInfo.setFragment(activity.getFragmentManager().findFragmentByTag(tabInfo.getTag()));
+        tabInfo.setFragment(activity.getSupportFragmentManager().findFragmentByTag(tabInfo.getTag()));
 
         if (tabInfo.getFragment() != null && !tabInfo.getFragment().isDetached()) {
-            FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             ft.detach(tabInfo.getFragment());
             ft.commit();
             activity.getFragmentManager().executePendingTransactions();
@@ -85,7 +85,7 @@ public class TabManager implements View.OnClickListener{
         if (mLastTab != newTab) {
             blockTab((ImageButton) v);
             Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
-            FragmentTransaction ft = activity.getFragmentManager().beginTransaction();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             if (mLastTab != null) {
                 unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
                 Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
