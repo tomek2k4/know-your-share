@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 
+import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
@@ -37,15 +38,14 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    /**
-     * Initialise the fragments to be paged
-     */
+
     private void initialisePaging() {
-        List<Fragment> fragments = new Vector<Fragment>();
-        fragments.add(Fragment.instantiate(this, HomeFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, ProductsFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, SettingsFragment.class.getName()));
-        this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
+        List<TabInfo> tabInfoList = tabManager.getTabInfoList();
+//        List<Fragment> fragments = new Vector<Fragment>();
+//        fragments.add(Fragment.instantiate(this, HomeFragment.class.getName()));
+//        fragments.add(Fragment.instantiate(this, ProductsFragment.class.getName()));
+//        fragments.add(Fragment.instantiate(this, SettingsFragment.class.getName()));
+        this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(),this, tabInfoList);
 
         //
         ViewPager pager = (ViewPager)super.findViewById(R.id.main_panel);

@@ -15,7 +15,10 @@ import com.pum.tomasz.knowyourshare.R;
 import com.pum.tomasz.knowyourshare.SettingsFragment;
 import com.pum.tomasz.knowyourshare.Utilities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -60,7 +63,7 @@ public class TabManager implements View.OnClickListener{
         this.mapTabInfo.put(tabInfo.getViewId(), tabInfo);
 
         // Default to first tab
-        this.onClick(homeImageButton);
+        //this.onClick(homeImageButton);
 
     }
 
@@ -109,8 +112,14 @@ public class TabManager implements View.OnClickListener{
     }
 
 
-    public HashMap<Integer, TabInfo> getMapTabInfo() {
-        return mapTabInfo;
+    public List<TabInfo> getTabInfoList() {
+
+        List<TabInfo> tabInfo = new Vector<TabInfo>();
+        tabInfo.add(mapTabInfo.get(R.id.home_button));
+        tabInfo.add(mapTabInfo.get(R.id.products_button));
+        tabInfo.add(mapTabInfo.get(R.id.settings_button));
+
+        return tabInfo;
     }
 
     public String getCurrentTabTag(){
@@ -130,5 +139,6 @@ public class TabManager implements View.OnClickListener{
     private static void blockTab(ImageButton imageButton){
         imageButton.setSelected(true);
     }
+
 
 }
