@@ -5,6 +5,16 @@ package com.pum.tomasz.knowyourshare.tabs;
  */
 public enum TabsTagEnum {
 
-    HOME,PRODUCTS,SETTINGS
+    HOME(0),PRODUCTS(1),SETTINGS(2);
+
+    private final int value;
+    private TabsTagEnum(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
 
 }

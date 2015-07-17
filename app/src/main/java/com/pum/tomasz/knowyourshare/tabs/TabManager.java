@@ -109,6 +109,10 @@ public class TabManager implements View.OnClickListener{
     }
 
 
+    public HashMap<Integer, TabInfo> getMapTabInfo() {
+        return mapTabInfo;
+    }
+
     public String getCurrentTabTag(){
 
         return mLastTab.getTag();

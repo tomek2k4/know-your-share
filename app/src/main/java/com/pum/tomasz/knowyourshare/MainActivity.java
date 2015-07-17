@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 
+import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Vector;
 public class MainActivity extends FragmentActivity {
 
 
+    private TabManager tabManager = null;
     private PagerAdapter mPagerAdapter;
 
 
@@ -27,8 +29,12 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tabManager = new TabManager(this);
+        tabManager.initialiseTabManager(savedInstanceState);
+
         //initialsie the pager
         this.initialisePaging();
+
     }
 
     /**
@@ -40,9 +46,11 @@ public class MainActivity extends FragmentActivity {
         fragments.add(Fragment.instantiate(this, ProductsFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, SettingsFragment.class.getName()));
         this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
+
         //
         ViewPager pager = (ViewPager)super.findViewById(R.id.main_panel);
         pager.setAdapter(this.mPagerAdapter);
+
     }
 
 
