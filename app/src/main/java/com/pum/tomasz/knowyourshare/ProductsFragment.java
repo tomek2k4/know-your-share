@@ -32,8 +32,7 @@ public class ProductsFragment extends ListFragment {
 
 
         setListAdapter(new ArrayAdapter<String>(activity,
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1, getResources().getStringArray(
+                R.layout.products_list_textview, getResources().getStringArray(
                 R.array.city_names)));
 
         Log.d(Utilities.TAG, "ProductsFragment onCreate called");

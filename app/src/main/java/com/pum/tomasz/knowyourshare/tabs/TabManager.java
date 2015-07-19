@@ -27,17 +27,27 @@ import java.util.Vector;
 public class TabManager implements View.OnClickListener{
 
     private HashMap<Integer, TabInfo> mapTabInfo = new HashMap<Integer, TabInfo>();
+    List<TabInfo> tabInfoList = new Vector<TabInfo>();
+
     private TabInfo mLastTab = null;
+    private TabChangeListener tabChangeListener;
 
     private ImageButton  homeImageButton;
     private ImageButton  productsImageButton;
     private ImageButton  settingsImageButton;
     private MainActivity activity;
 
+
+
+    public interface TabChangeListener {
+        public void onTabSelected(int position);
+    }
+
+
+
     public TabManager(MainActivity activity) {
         this.activity = activity;
-
-
+        tabChangeListener = (TabChangeListener) activity;
     }
 
     public void initialiseTabManager(Bundle args) {
@@ -55,15 +65,18 @@ public class TabManager implements View.OnClickListener{
 
         addTab(activity, (tabInfo = new TabInfo(R.id.home_button, TabsTagEnum.HOME.name(), HomeFragment.class, args)));
         this.mapTabInfo.put(tabInfo.getViewId(), tabInfo);
+        this.tabInfoList.add(tabInfo);
 
-        addTab( activity,(tabInfo = new TabInfo(R.id.products_button,TabsTagEnum.PRODUCTS.name(), ProductsFragment.class,args)) );
+        addTab(activity, (tabInfo = new TabInfo(R.id.products_button, TabsTagEnum.PRODUCTS.name(), ProductsFragment.class, args)));
         this.mapTabInfo.put(tabInfo.getViewId(), tabInfo);
+        this.tabInfoList.add(tabInfo);
 
-        addTab( activity,(tabInfo = new TabInfo(R.id.settings_button,TabsTagEnum.SETTINGS.name(), SettingsFragment.class,args)) );
+        addTab(activity, (tabInfo = new TabInfo(R.id.settings_button, TabsTagEnum.SETTINGS.name(), SettingsFragment.class, args)));
         this.mapTabInfo.put(tabInfo.getViewId(), tabInfo);
+        this.tabInfoList.add(tabInfo);
 
         // Default to first tab
-        //this.onClick(homeImageButton);
+        this.onClick(homeImageButton);
 
     }
 
@@ -83,58 +96,73 @@ public class TabManager implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
         TabInfo newTab = this.mapTabInfo.get(v.getId());
         if (mLastTab != newTab) {
             blockTab((ImageButton) v);
             Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
-            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
             if (mLastTab != null) {
                 unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
                 Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
-                if (mLastTab.getFragment() != null) {
-                    ft.detach(mLastTab.getFragment());
-                }
-            }
-            if (newTab != null) {
-                if (newTab.getFragment() == null) {
-                    newTab.setFragment(Fragment.instantiate(activity,
-                            newTab.getClss().getName(), newTab.getArgs()));
-                    ft.add(R.id.main_panel, newTab.getFragment(), newTab.getTag());
-                } else {
-                    ft.attach(newTab.getFragment());
-                }
             }
             mLastTab = newTab;
-            ft.commit();
-            activity.getFragmentManager().executePendingTransactions();
         }
+
+        for (TabInfo tabInfo:tabInfoList){
+            if(tabInfo == newTab){
+                blockTab((ImageButton) v);
+                tabChangeListener.onTabSelected(tabInfoList.indexOf(tabInfo));
+            }
+        }
+
+//        TabInfo newTab = this.mapTabInfo.get(v.getId());
+//        if (mLastTab != newTab) {
+//            blockTab((ImageButton) v);
+//            Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
+//            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+//            if (mLastTab != null) {
+//                unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
+//                Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
+//                if (mLastTab.getFragment() != null) {
+//                    ft.detach(mLastTab.getFragment());
+//                }
+//            }
+//            if (newTab != null) {
+//                if (newTab.getFragment() == null) {
+//                    newTab.setFragment(Fragment.instantiate(activity,
+//                            newTab.getClss().getName(), newTab.getArgs()));
+//                    ft.add(R.id.main_panel, newTab.getFragment(), newTab.getTag());
+//                } else {
+//                    ft.attach(newTab.getFragment());
+//                }
+//            }
+//            mLastTab = newTab;
+//            ft.commit();
+//            activity.getFragmentManager().executePendingTransactions();
+//        }
     }
 
 
     public List<TabInfo> getTabInfoList() {
+        return tabInfoList;
+    }
 
-        List<TabInfo> tabInfo = new Vector<TabInfo>();
-        tabInfo.add(mapTabInfo.get(R.id.home_button));
-        tabInfo.add(mapTabInfo.get(R.id.products_button));
-        tabInfo.add(mapTabInfo.get(R.id.settings_button));
-
-        return tabInfo;
+    public int getCurrentTabId() {
+        return mLastTab.getViewId();
     }
 
     public String getCurrentTabTag(){
-
         return mLastTab.getTag();
     }
 
-    public void setCurrentTabByTag(String tag){
-        mLastTab.setTag(tag);
+    public void setCurrentTabById(int id){
+        this.onClick(activity.findViewById(id));
     }
+
+
 
     private void unblockTab(ImageButton imageButton) {
         imageButton.setSelected(false);
     }
-
 
     private static void blockTab(ImageButton imageButton){
         imageButton.setSelected(true);

@@ -16,11 +16,12 @@ import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 import java.util.List;
 import java.util.Vector;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener {
 
 
     private TabManager tabManager = null;
     private PagerAdapter mPagerAdapter;
+    private ViewPager mViewPager = null;
 
 
     @Override
@@ -32,6 +33,9 @@ public class MainActivity extends FragmentActivity {
 
         tabManager = new TabManager(this);
         tabManager.initialiseTabManager(savedInstanceState);
+        if (savedInstanceState != null) {
+            tabManager.setCurrentTabById(savedInstanceState.getInt("tab")); //set the tab as per the saved state
+        }
 
         //initialsie the pager
         this.initialisePaging();
@@ -41,18 +45,26 @@ public class MainActivity extends FragmentActivity {
 
     private void initialisePaging() {
         List<TabInfo> tabInfoList = tabManager.getTabInfoList();
-//        List<Fragment> fragments = new Vector<Fragment>();
-//        fragments.add(Fragment.instantiate(this, HomeFragment.class.getName()));
-//        fragments.add(Fragment.instantiate(this, ProductsFragment.class.getName()));
-//        fragments.add(Fragment.instantiate(this, SettingsFragment.class.getName()));
         this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(),this, tabInfoList);
 
-        //
-        ViewPager pager = (ViewPager)super.findViewById(R.id.main_panel);
-        pager.setAdapter(this.mPagerAdapter);
+        mViewPager = (ViewPager)super.findViewById(R.id.main_panel);
+        mViewPager.setAdapter(this.mPagerAdapter);
 
     }
 
 
+    @Override
+    public void onTabSelected(int position) {
+        if(mViewPager!=null){
+            Log.d(Utilities.TAG,"Pressed tab with index: "+new Integer(position).toString());
+            mViewPager.setCurrentItem(position, true);
+        }
+    }
+
+
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("tab", tabManager.getCurrentTabId()); //save the tab selected
+        super.onSaveInstanceState(outState);
+    }
 
 }
