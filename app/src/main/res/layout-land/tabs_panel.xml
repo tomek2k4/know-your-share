@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/tab_focus"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_weight="9"
+    android:orientation="vertical"
+
+    >
+
+    <ImageButton
+        android:src="@drawable/tab_home"
+        android:background="@drawable/tab_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/home_button"
+        android:layout_weight="1"
+        />
+
+    <ImageButton
+        android:src="@drawable/tab_products"
+        android:background="@drawable/tab_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/products_button"
+        android:layout_weight="1"/>
+
+    <ImageButton
+        android:src="@drawable/tab_settings"
+        android:background="@drawable/tab_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settings_button"
+        android:layout_weight="1" />
+
+</LinearLayout>
