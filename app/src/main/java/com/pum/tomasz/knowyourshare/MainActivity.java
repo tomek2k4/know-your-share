@@ -13,16 +13,16 @@ import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
-import java.util.List;
-import java.util.Vector;
 
-public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener {
+import java.util.List;
+
+
+public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener,
+        MyPagerAdapter.ViewChangeListener {
 
 
     private TabManager tabManager = null;
-    private PagerAdapter mPagerAdapter;
-    private ViewPager mViewPager = null;
-
+    private PagerAdapter mPagerAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +42,30 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     }
 
-
     private void initialisePaging() {
         List<TabInfo> tabInfoList = tabManager.getTabInfoList();
-        this.mPagerAdapter  = new MyPagerAdapter(super.getSupportFragmentManager(),this, tabInfoList);
+        mPagerAdapter  = new MyPagerAdapter(this,(ViewPager) super.findViewById(R.id.main_panel),tabInfoList);
 
-        mViewPager = (ViewPager)super.findViewById(R.id.main_panel);
-        mViewPager.setAdapter(this.mPagerAdapter);
-
+        //((MyPagerAdapter)mPagerAdapter).getViewPager().setAdapter(this.mPagerAdapter);
     }
 
 
+    // Event that comes form TabManager, ViewPager needs to be updated
     @Override
     public void onTabSelected(int position) {
-        if(mViewPager!=null){
+        if(mPagerAdapter!=null){
             Log.d(Utilities.TAG,"Pressed tab with index: "+new Integer(position).toString());
-            mViewPager.setCurrentItem(position, true);
+            ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(position, true);
+        }
+    }
+
+    // Event that comes form ViewPagerAdapter, TabManager needs to be updated
+    @Override
+    public void onViewSelected(int position) {
+
+        // Check current tab manager last tab to prevent over lapping of events
+        if(tabManager.getCurrentTabId() != tabManager.getTabInfoList().get(position).getViewId()){
+            tabManager.setCurrentTabById(tabManager.getTabInfoList().get(position).getViewId());
         }
     }
 
@@ -66,5 +74,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         outState.putInt("tab", tabManager.getCurrentTabId()); //save the tab selected
         super.onSaveInstanceState(outState);
     }
+
 
 }

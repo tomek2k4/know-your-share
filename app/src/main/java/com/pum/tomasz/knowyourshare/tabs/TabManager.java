@@ -43,8 +43,6 @@ public class TabManager implements View.OnClickListener{
         public void onTabSelected(int position);
     }
 
-
-
     public TabManager(MainActivity activity) {
         this.activity = activity;
         tabChangeListener = (TabChangeListener) activity;
@@ -98,21 +96,28 @@ public class TabManager implements View.OnClickListener{
     public void onClick(View v) {
         TabInfo newTab = this.mapTabInfo.get(v.getId());
         if (mLastTab != newTab) {
+
+            // Set graphical element of tab
             blockTab((ImageButton) v);
             Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
             if (mLastTab != null) {
                 unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
                 Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
             }
-            mLastTab = newTab;
-        }
 
-        for (TabInfo tabInfo:tabInfoList){
-            if(tabInfo == newTab){
-                blockTab((ImageButton) v);
-                tabChangeListener.onTabSelected(tabInfoList.indexOf(tabInfo));
+            // Update current Tab
+            mLastTab = newTab;
+
+            //Inform MainActivity about change of tab
+            for (TabInfo tabInfo:tabInfoList){
+                if(tabInfo == newTab){
+                    blockTab((ImageButton) v);
+                    tabChangeListener.onTabSelected(tabInfoList.indexOf(tabInfo));
+                }
             }
         }
+
+
 
 //        TabInfo newTab = this.mapTabInfo.get(v.getId());
 //        if (mLastTab != newTab) {
