@@ -31,6 +31,7 @@ public class ProductsFragment extends Fragment{ //extends ListFragment {
     private Button addButton = null;
     private TextView textView = null;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) {
@@ -43,15 +44,16 @@ public class ProductsFragment extends Fragment{ //extends ListFragment {
             // the view hierarchy; it would just never be used.
             return null;
         }
-        View view = inflater.inflate(R.layout.fragment_products, container, false);
-        addButton = (Button) view.findViewById(R.id.add_button);
+        View rootView = (FrameLayout)inflater.inflate(R.layout.fragment_products, container, false);
 
-        addButton.setText("-");
 
-        textView = (TextView)view.findViewById(R.id.text_on_products);
-        textView.setText("Blabalabla");
-        Log.d(Utilities.TAG,"ProductsFragment onCreateView called");
-        return (FrameLayout)inflater.inflate(R.layout.fragment_products, container, false);
+        TextView productsTextView = (TextView) rootView.findViewById(R.id.text_on_products);
+        productsTextView.setText("nowy tekst dla produktow");
+
+        addButton = (Button) rootView.findViewById(R.id.add_button);
+
+        return rootView;
+
     }
 
 
@@ -65,18 +67,6 @@ public class ProductsFragment extends Fragment{ //extends ListFragment {
 //                R.layout.products_list_textview, getResources().getStringArray(
 //                R.array.city_names)));
 
-
-
-
-//        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
-//            @Override
-//            public void getOutline(View view, Outline outline) {
-//                // Or read size directly from the view's width/height
-//                outline.setOval(0, 0, 56, 56);
-//            }
-//        };
-//
-//        fab.setOutlineProvider(viewOutlineProvider);
 
         if(addButton!=null){
           addButton.setText("-");
@@ -93,11 +83,6 @@ public class ProductsFragment extends Fragment{ //extends ListFragment {
 
         Log.d(Utilities.TAG, "ProductsFragment onAttach called");
 
-        this.activity = activity;
-
-        if(textView != null){
-            textView.setText("Dupa!");
-        }
 
     }
 }

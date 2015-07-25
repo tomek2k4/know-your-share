@@ -39,7 +39,7 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="25dp"
-        android:translationZ="5dp"
+        android:translationZ="20dp"
         style="android: buttonStyleSmall;">
     </Button>
 
