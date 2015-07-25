@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	
-	<color name="mainColor">#f0eedd</color>>
-	
-	<color name="tabMedium">#ffffff</color>
-	<color name="tabDark">#f0eedd</color>
-	<color name="tabTransparent">#10ffffff</color>
-	
-	
-	
-	
+	<color name="mainColor">#f0f0d8</color>>
+	<color name="tabMedium">#127</color>
+	<color name="tabDark">#127</color>
+	<color name="tabTransparent">#00ffffff</color>
+
 </resources>

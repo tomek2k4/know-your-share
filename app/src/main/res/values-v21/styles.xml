@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="app_theme" parent="android:Theme.Material.Light">
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
+
+
+        <item name="android:colorPrimaryDark">#00004f</item>
+
+        <!-- Main theme colors -->
+        <!--   your app branding color for the app bar -->
+        <item name="android:colorPrimary">@color/tabDark</item>
+
+
+        <item name="android:colorAccent">@color/tabDark</item>
+        <!--   color For Ripple effect -->
+        <item name="android:colorControlHighlight">@color/tabDark</item>
+
+    </style>
+
+
+</resources>

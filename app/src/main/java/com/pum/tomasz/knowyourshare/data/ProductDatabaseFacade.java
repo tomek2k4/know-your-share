@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.pum.tomasz.knowyourshare.Utilities;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -91,6 +92,60 @@ public class ProductDatabaseFacade {
             }
         }
     }
+
+    public List<Product> findByName(String name) {
+        validate();
+        List<Product> result = new LinkedList<Product>();
+        Cursor cur = null;
+        try {
+            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
+                    "name='" + name + "'", null, null, null, "date", null);
+            extractProductsFromCursor(result, cur);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+        } finally {
+            if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+
+
+    public List<Product> listAll() {
+        validate();
+        List<Product> result = new LinkedList<Product>();
+        Cursor cur = null;
+        try {
+            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
+                    null, null, null, null, "title", null);
+            extractProductsFromCursor(result, cur);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+        } finally {
+            if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+
+
+    public Cursor getCursorForAllProducts() {
+        validate();
+        Cursor cur = null;
+        try {
+            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
+                    null, null, null, null, "title", null);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+            cur = null;
+        }
+        return cur;
+    }
+
 
     private void extractProductsFromCursor(List<Product> list, Cursor cur) {
         if (cur.moveToFirst()) {

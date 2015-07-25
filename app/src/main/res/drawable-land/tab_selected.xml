@@ -4,8 +4,8 @@
     <item android:left="@dimen/tab_space" android:right="@dimen/tab_space">
         <shape android:shape="rectangle">
 
-            <gradient android:angle="0" android:startColor="@color/tabMedium"
-                android:endColor="@color/tabDark" />
+            <gradient android:angle="0" android:startColor="@color/tabDark"
+                android:endColor="@color/tabMedium" />
         </shape>
     </item>
 

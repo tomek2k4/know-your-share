@@ -2,13 +2,13 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/products_list_textview"
     android:textColor="@android:color/black"
-    android:padding="20sp"
+    android:padding="10sp"
     android:layout_width="wrap_content"
     android:background="@color/mainColor"
     android:singleLine="true"
     android:gravity="center"
     android:layout_height="wrap_content"
     android:textStyle="bold"
-    android:textSize="20sp"
+    android:textSize="15sp"
 
     />

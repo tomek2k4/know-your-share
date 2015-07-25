@@ -31,6 +31,10 @@ public class ProductsFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
 
+
+
+
+
         setListAdapter(new ArrayAdapter<String>(activity,
                 R.layout.products_list_textview, getResources().getStringArray(
                 R.array.city_names)));
