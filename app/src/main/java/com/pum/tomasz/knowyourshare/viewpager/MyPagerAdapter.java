@@ -1,11 +1,14 @@
 package com.pum.tomasz.knowyourshare.viewpager;
 
+import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
+import com.pum.tomasz.knowyourshare.HomeFragment;
 import com.pum.tomasz.knowyourshare.MainActivity;
 import com.pum.tomasz.knowyourshare.Utilities;
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
@@ -44,9 +47,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
     @Override
     public Fragment getItem(int position) {
         //Log.d(Utilities.TAG, "MyPagerAdapter getItem called with position: " + new Integer(position).toString());
-
         Fragment fragment = null;
-
         TabInfo tabInfo = tabInfoList.get(position);
         if (tabInfo.getFragment() == null) {
             fragment = Fragment.instantiate(activity,

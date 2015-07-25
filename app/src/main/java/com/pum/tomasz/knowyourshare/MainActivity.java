@@ -1,9 +1,11 @@
 package com.pum.tomasz.knowyourshare;
 
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -54,8 +56,15 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     @Override
     public void onTabSelected(int position) {
         if(mPagerAdapter!=null){
-            Log.d(Utilities.TAG,"Pressed tab with index: "+new Integer(position).toString());
+            Log.d(Utilities.TAG, "Pressed tab with index: " + new Integer(position).toString());
             ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(position, true);
+
+            if(position==0)
+            {
+                Log.d(Utilities.TAG, "Clicked on tab 0, update home fragment");
+                TabInfo tabInfo = tabManager.getTabInfoList().get(position);
+                ((HomeFragment)tabInfo.getFragment()).update("new text");
+            }
         }
     }
 
