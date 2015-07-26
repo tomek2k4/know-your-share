@@ -25,6 +25,19 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
     private ViewPager mViewPager = null;
     private ViewChangeListener viewChangeListener = null;
 
+    public void removeAllFragments() {
+
+        if ( tabInfoList != null ) {
+            for ( TabInfo tabInfo : tabInfoList ) {
+                Fragment fragment = tabInfo.getFragment();
+                activity.getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+            tabInfoList.clear();
+            notifyDataSetChanged();
+        }
+
+    }
+
     public interface ViewChangeListener {
         public void onViewSelected(int position);
     }

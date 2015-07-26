@@ -81,6 +81,7 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("tab", tabManager.getCurrentTabId()); //save the tab selected
+        ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
         super.onSaveInstanceState(outState);
     }
 
