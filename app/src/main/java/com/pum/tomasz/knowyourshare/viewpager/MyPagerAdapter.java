@@ -30,7 +30,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
         if ( tabInfoList != null ) {
             for ( TabInfo tabInfo : tabInfoList ) {
                 Fragment fragment = tabInfo.getFragment();
-                activity.getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                if(fragment!=null){
+                    activity.getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
             }
             tabInfoList.clear();
             notifyDataSetChanged();
@@ -59,7 +61,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
 
     @Override
     public Fragment getItem(int position) {
-        //Log.d(Utilities.TAG, "MyPagerAdapter getItem called with position: " + new Integer(position).toString());
+        Log.d(Utilities.TAG, "MyPagerAdapter getItem called with position: " + new Integer(position).toString());
         Fragment fragment = null;
         TabInfo tabInfo = tabInfoList.get(position);
         if (tabInfo.getFragment() == null) {
