@@ -1,6 +1,7 @@
 package com.pum.tomasz.knowyourshare;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +36,9 @@ public class HomeFragment extends Fragment {
 
         View rootView = (LinearLayout)inflater.inflate(R.layout.fragment_home, container, false);
 
+        initializeHomeLayoutComponents(rootView);
+
+
         if (homeTextTitle != null) {
             TextView homeTextView = (TextView) rootView.findViewById(R.id.home_text_title);
             homeTextView.setText(homeTextTitle);
@@ -43,6 +47,7 @@ public class HomeFragment extends Fragment {
         return rootView;
 
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,4 +72,38 @@ public class HomeFragment extends Fragment {
         TextView homeTextView = (TextView) getView().findViewById(R.id.home_text_title);
         homeTextView.setText(newText);
     }
+
+    private void initializeHomeLayoutComponents(View rootView) {
+        initializeLayoutButton(rootView.findViewById(R.id.all_products_button_layout),
+                getResources().getDrawable(R.drawable.search_normal),getString(R.string.show_all_products_string) ,20);
+
+        initializeLayoutButton(rootView.findViewById(R.id.today_products_button_layout),
+                getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,10);
+
+        initializeLayoutButton(rootView.findViewById(R.id.cheapest_products_button_layout),
+                getResources().getDrawable(R.drawable.dollar_sign),getString(R.string.show_chepeast_products_string) ,20);
+    }
+
+    private void initializeLayoutButton(View buttonLayout, Drawable drawable, String title, Integer elements){
+
+        ImageView homeImageLeft = (ImageView)buttonLayout.findViewById(R.id.image_home_button);
+        homeImageLeft.setImageDrawable(drawable);
+
+        TextView homeTextView = (TextView) buttonLayout.findViewById(R.id.name_home_button);
+        homeTextView.setText(title);
+
+        TextView homeElementsRight = (TextView) buttonLayout.findViewById(R.id.text_elements_home_button);
+        homeElementsRight.setText(elements.toString());
+
+
+
+    }
+
+
+
+
+
+
+
+
 }

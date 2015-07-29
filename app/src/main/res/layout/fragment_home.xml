@@ -10,43 +10,63 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_border"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/show_all_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
 
-        <Button
-            android:id="@+id/show_today_button"
+        <include
+            android:id="@+id/all_products_button_layout"
+            layout="@layout/home_button_layout"
+            android:layout_height="@dimen/home_button_height"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            />
 
-        <Button
-            android:id="@+id/show_newest"
+        <include
+            android:id="@+id/today_products_button_layout"
+            layout="@layout/home_button_layout"
+            android:layout_height="@dimen/home_button_height"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            />
+
+        <include
+            android:id="@+id/cheapest_products_button_layout"
+            layout="@layout/home_button_layout"
+            android:layout_height="@dimen/home_button_height"
+            android:layout_width="fill_parent"
+            />
+
+
+        <!--<Button-->
+            <!--android:id="@+id/show_all_button"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/show_today_button"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/show_"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"/>-->
 
     </LinearLayout>
-
-
 
     <TextView
         android:id="@+id/home_text_title"
