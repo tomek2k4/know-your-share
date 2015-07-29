@@ -16,4 +16,5 @@
     <string name="show_all_products_string">Show all products</string>
     <string name="show_today_products_string">Show today\'s products</string>
     <string name="show_chepeast_products_string">Show cheapest products first</string>
+    <string name="add_new_product_string">Add new product</string>
 </resources>

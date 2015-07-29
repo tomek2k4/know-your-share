@@ -15,10 +15,17 @@ import android.widget.TextView;
 /**
  * Created by tomasz on 15.07.2015.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener{
 
     public static final String TEXT_TITLE_ID = "city_id";
     private String homeTextTitle;
+
+    private OnHomeFragmentButtonClickListener homeFragmentButtonClickListener = null;
+
+    interface OnHomeFragmentButtonClickListener{
+        public void onHomeFragmentButtonClick(int id);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +62,8 @@ public class HomeFragment extends Fragment {
 
         Log.d(Utilities.TAG, "HomeFragment on Create called");
 
+        homeFragmentButtonClickListener = (OnHomeFragmentButtonClickListener)getActivity();
+
         Bundle arguments = getArguments();
         if (arguments != null)
         {
@@ -75,34 +84,51 @@ public class HomeFragment extends Fragment {
 
     private void initializeHomeLayoutComponents(View rootView) {
         initializeLayoutButton(rootView.findViewById(R.id.all_products_button_layout),
-                getResources().getDrawable(R.drawable.search_normal),getString(R.string.show_all_products_string) ,20);
+                getResources().getDrawable(R.drawable.search_selected),getString(R.string.show_all_products_string) ,20);
 
         initializeLayoutButton(rootView.findViewById(R.id.today_products_button_layout),
                 getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,10);
 
         initializeLayoutButton(rootView.findViewById(R.id.cheapest_products_button_layout),
                 getResources().getDrawable(R.drawable.dollar_sign),getString(R.string.show_chepeast_products_string) ,20);
+
+        initializeLayoutButton(rootView.findViewById(R.id.add_product_home_button_layout),
+                getResources().getDrawable(R.drawable.add_product_home),getString(R.string.add_new_product_string) ,-1);
+
     }
+
 
     private void initializeLayoutButton(View buttonLayout, Drawable drawable, String title, Integer elements){
 
+        // Draw all button components
         ImageView homeImageLeft = (ImageView)buttonLayout.findViewById(R.id.image_home_button);
         homeImageLeft.setImageDrawable(drawable);
+
 
         TextView homeTextView = (TextView) buttonLayout.findViewById(R.id.name_home_button);
         homeTextView.setText(title);
 
         TextView homeElementsRight = (TextView) buttonLayout.findViewById(R.id.text_elements_home_button);
-        homeElementsRight.setText(elements.toString());
 
+        if(elements == -1){
+            homeElementsRight.setText("");
+        }else{
+            homeElementsRight.setText(elements.toString());
+        }
 
+        buttonLayout.setOnClickListener(this);
 
     }
 
 
+    @Override
+    public void onClick(View v) {
 
+        if(homeFragmentButtonClickListener!=null){
+            homeFragmentButtonClickListener.onHomeFragmentButtonClick(v.getId());
+        }
 
-
+    }
 
 
 

@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <corners android:radius="0dp"/>
-    <padding android:left="10dp" android:right="10dp" android:top="10dp" android:bottom="10dp"/>
-    <stroke android:color="#20000000" android:width="1dp"/>
-    <solid android:color="@color/mainColor"/>
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Non focused states -->
+    <item android:state_focused="false" android:state_selected="false"
+        android:state_pressed="false" android:drawable="@drawable/button_home_fragment_unselected" />
+    <item android:state_focused="false" android:state_selected="true"
+        android:state_pressed="false" android:drawable="@drawable/button_home_fragment_unselected" />
+
+    <!-- Focused states -->
+    <item android:state_focused="true" android:state_selected="false"
+        android:state_pressed="false" android:drawable="@drawable/button_home_fragment_unselected" />
+    <item android:state_focused="true" android:state_selected="true"
+        android:state_pressed="false" android:drawable="@drawable/button_home_fragment_unselected" />
+
+    <!-- Pressed -->
+    <item android:state_selected="true" android:state_pressed="true"
+        android:drawable="@drawable/button_home_fragment_selected" />
+    <item android:state_pressed="true" android:drawable="@drawable/button_home_fragment_selected" />
+</selector>
+
+
+
+
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">-->
+    <!--<corners android:radius="0dp"/>-->
+    <!--<padding android:left="10dp" android:right="10dp" android:top="10dp" android:bottom="10dp"/>-->
+    <!--<stroke android:color="#20000000" android:width="1dp"/>-->
+    <!--<solid android:color="@color/mainColor"/>-->
+
+<!--</shape>-->
