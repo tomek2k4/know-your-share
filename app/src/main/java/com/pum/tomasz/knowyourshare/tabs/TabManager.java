@@ -18,6 +18,7 @@ import com.pum.tomasz.knowyourshare.Utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.Vector;
 
 
@@ -30,6 +31,7 @@ public class TabManager implements View.OnClickListener{
     List<TabInfo> tabInfoList = new Vector<TabInfo>();
 
     private TabInfo mLastTab = null;
+    private Stack<Integer> fragmentTabsStack = null;
     private TabChangeListener tabChangeListener;
 
     private ImageButton  homeImageButton;
@@ -40,12 +42,14 @@ public class TabManager implements View.OnClickListener{
 
 
     public interface TabChangeListener {
-        public void onTabSelected(int position);
+        public void onTabSelected(int position,boolean isStackTraced);
     }
 
     public TabManager(MainActivity activity) {
         this.activity = activity;
         tabChangeListener = (TabChangeListener) activity;
+        //Create Fragments Stack push when new Fragment created, pop when back selected
+        fragmentTabsStack = new Stack<>();
     }
 
     public void initialiseTabManager(Bundle args) {
@@ -105,6 +109,11 @@ public class TabManager implements View.OnClickListener{
                 Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
             }
 
+            if(tabInfoList.indexOf(newTab)==TabsTagEnum.HOME.getValue())
+            {
+                fragmentTabsStack.clear();
+            }
+
             // Update current Tab
             mLastTab = newTab;
 
@@ -112,9 +121,12 @@ public class TabManager implements View.OnClickListener{
             for (TabInfo tabInfo:tabInfoList){
                 if(tabInfo == newTab){
                     blockTab((ImageButton) v);
-                    tabChangeListener.onTabSelected(tabInfoList.indexOf(tabInfo));
+                    tabChangeListener.onTabSelected(tabInfoList.indexOf(tabInfo),true);
                 }
             }
+
+
+
         }
 
 
@@ -159,11 +171,25 @@ public class TabManager implements View.OnClickListener{
         return mLastTab.getTag();
     }
 
+    public int getLastTabPosition(){
+        int lastTabPosition;
+
+        if(mLastTab!=null){
+            lastTabPosition = tabInfoList.indexOf(mLastTab);
+        }else{
+            lastTabPosition = TabsTagEnum.HOME.getValue();
+        }
+        return lastTabPosition;
+    }
+
+
     public void setCurrentTabById(int id){
         this.onClick(activity.findViewById(id));
     }
 
-
+    public Stack<Integer> getFragmentTabsStack() {
+        return fragmentTabsStack;
+    }
 
     private void unblockTab(ImageButton imageButton) {
         imageButton.setSelected(false);

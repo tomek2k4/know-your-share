@@ -3,12 +3,14 @@ package com.pum.tomasz.knowyourshare;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
@@ -28,7 +30,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     private TabManager tabManager = null;
     private PagerAdapter mPagerAdapter = null;
-    private Stack<Integer> fragmentTabsStack = null;
+    private boolean doubleBackToExitPressedOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,24 +49,25 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         //initialsie the pager
         this.initialisePaging();
 
-        //Create Fragments Stack push when new Fragment created, pop when back selected
-        fragmentTabsStack = new Stack<>();
-        fragmentTabsStack.push(0);
-        Log.d(Utilities.TAG,"Added to stack:0");
 
     }
 
     private void initialisePaging() {
         List<TabInfo> tabInfoList = tabManager.getTabInfoList();
         mPagerAdapter  = new MyPagerAdapter(this,(ViewPager) super.findViewById(R.id.main_panel),tabInfoList);
-
-        //((MyPagerAdapter)mPagerAdapter).getViewPager().setAdapter(this.mPagerAdapter);
     }
 
 
     // Event that comes form TabManager, ViewPager needs to be updated
     @Override
-    public void onTabSelected(int position) {
+    public void onTabSelected(int position,boolean isStackTraced) {
+
+        if(isStackTraced){
+            //Add to stack previous position
+            tabManager.getFragmentTabsStack().push(tabManager.getLastTabPosition());
+            Log.d(Utilities.TAG, "Added to stack:" + tabManager.getLastTabPosition());
+        }
+
         if(mPagerAdapter!=null){
             Log.d(Utilities.TAG, "Pressed tab with index: " + new Integer(position).toString());
             ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(position, true);
@@ -74,6 +78,7 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 TabInfo tabInfo = tabManager.getTabInfoList().get(position);
                 ((HomeFragment)tabInfo.getFragment()).update("new text");
             }
+
         }
     }
 
@@ -83,16 +88,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         // Check current tab manager last tab to prevent over lapping of events
         if(tabManager.getCurrentTabId() != tabManager.getTabInfoList().get(position).getViewId()){
             tabManager.setCurrentTabById(tabManager.getTabInfoList().get(position).getViewId());
-            //add tab position to tab stack
-            if(position != TabsTagEnum.HOME.getValue()){
-                //save tab position only if different than home tab
-                fragmentTabsStack.push(position);
-                Log.d(Utilities.TAG, "Added to stack:"+new Integer(position));
-            }else {
-                Log.d(Utilities.TAG, "Cleared stack:"+new Integer(position));
-                fragmentTabsStack.clear();
-                fragmentTabsStack.push(TabsTagEnum.HOME.getValue());
-            }
         }
     }
 
@@ -132,14 +127,31 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         int currentPosition = ((MyPagerAdapter)mPagerAdapter).getViewPager().getCurrentItem();
 
         if(currentPosition == TabsTagEnum.HOME.getValue()){
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }else{
             try {
-                previousPosition = fragmentTabsStack.pop();
+                tabManager.getFragmentTabsStack().pop();
+                previousPosition = tabManager.getFragmentTabsStack().pop();
+                Log.d(Utilities.TAG,"Poped stack value: "+previousPosition);
             }catch (EmptyStackException e){
                 Log.e(Utilities.TAG,"Empty fragment stack "+e.getStackTrace());
                 previousPosition = TabsTagEnum.HOME.getValue();
             }
+            Log.d(Utilities.TAG,"Jump to tab: "+previousPosition);
             ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(previousPosition, true);
         }
 
