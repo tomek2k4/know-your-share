@@ -20,6 +20,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public static final String TEXT_TITLE_ID = "city_id";
     private String homeTextTitle;
 
+    private int numberOfAllProducts = -1;
+
     private OnHomeFragmentButtonClickListener homeFragmentButtonClickListener = null;
 
     interface OnHomeFragmentButtonClickListener{
@@ -43,8 +45,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         View rootView = (LinearLayout)inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Initialize All components when all initial fields values updated
         initializeHomeLayoutComponents(rootView);
-
 
         if (homeTextTitle != null) {
             TextView homeTextView = (TextView) rootView.findViewById(R.id.home_text_title);
@@ -61,12 +63,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         Log.d(Utilities.TAG, "HomeFragment on Create called");
-
         homeFragmentButtonClickListener = (OnHomeFragmentButtonClickListener)getActivity();
 
         Bundle arguments = getArguments();
         if (arguments != null)
         {
+            //Set initial fields values
+            numberOfAllProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(),0);
+
             if (arguments.containsKey(TEXT_TITLE_ID)) {
                 homeTextTitle = getArguments().getString(TEXT_TITLE_ID);
                 Log.d(Utilities.TAG,"There is new argument");
@@ -84,7 +88,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void initializeHomeLayoutComponents(View rootView) {
         initializeLayoutButton(rootView.findViewById(R.id.all_products_button_layout),
-                getResources().getDrawable(R.drawable.search_selected),getString(R.string.show_all_products_string) ,20);
+                getResources().getDrawable(R.drawable.search_selected),getString(R.string.show_all_products_string) ,numberOfAllProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.today_products_button_layout),
                 getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,10);

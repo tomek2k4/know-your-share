@@ -2,35 +2,40 @@ package com.pum.tomasz.knowyourshare;
 
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
 
 
+import com.pum.tomasz.knowyourshare.data.Product;
+import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
+import com.pum.tomasz.knowyourshare.data.ProductDbOpenHelper;
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.tabs.TabsTagEnum;
 import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
-
 import java.util.EmptyStackException;
 import java.util.List;
-import java.util.Stack;
 
 
 public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener,
         MyPagerAdapter.ViewChangeListener, HomeFragment.OnHomeFragmentButtonClickListener{
 
-
     private TabManager tabManager = null;
     private PagerAdapter mPagerAdapter = null;
     private boolean doubleBackToExitPressedOnce = false;
+
+    private ProductDbOpenHelper dbOpenHelper = null;
+    private ProductDatabaseFacade dbHelper = null;
+    private SQLiteDatabase database = null;
+    private Cursor listCursor = null;
 
 
     @Override
@@ -40,15 +45,32 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Open database
+        if (dbOpenHelper == null) {
+            dbOpenHelper = new ProductDbOpenHelper(this);
+            database = dbOpenHelper.getWritableDatabase();
+        }
+        if (dbHelper == null) {
+            dbHelper = new ProductDatabaseFacade(database);
+        }
+        List<Product> p = dbHelper.listAll();
+        Log.d(Utilities.TAG, "Liczba produktow w bazie: " + p.size());
+        listCursor = dbHelper.getCursorForAllProducts();
+        startManagingCursor(listCursor);
+
+
+        Bundle fragmentsInitialArgs = new Bundle();
+        //Pass initial information to Fragments
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(), p.size());
+
         tabManager = new TabManager(this);
-        tabManager.initialiseTabManager(savedInstanceState);
+        tabManager.initialiseTabManager(fragmentsInitialArgs);
         if (savedInstanceState != null) {
-            tabManager.setCurrentTabById(savedInstanceState.getInt("tab")); //set the tab as per the saved state
+            tabManager.setCurrentTabById(savedInstanceState.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
         }
 
         //initialsie the pager
         this.initialisePaging();
-
 
     }
 
@@ -78,7 +100,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 TabInfo tabInfo = tabManager.getTabInfoList().get(position);
                 ((HomeFragment)tabInfo.getFragment()).update("new text");
             }
-
         }
     }
 
@@ -89,13 +110,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         if(tabManager.getCurrentTabId() != tabManager.getTabInfoList().get(position).getViewId()){
             tabManager.setCurrentTabById(tabManager.getTabInfoList().get(position).getViewId());
         }
-    }
-
-
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("tab", tabManager.getCurrentTabId()); //save the tab selected
-        ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -116,7 +130,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             case R.id.add_product_home_button_layout:
                 Log.d(Utilities.TAG,"Clicked on add new product button");
                 break;
-
         }
     }
 
@@ -154,6 +167,12 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             Log.d(Utilities.TAG,"Jump to tab: "+previousPosition);
             ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(previousPosition, true);
         }
-
     }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(BundleKeyEnum.LAST_KNOWN_TAB.name(), tabManager.getCurrentTabId()); //save the tab selected
+        ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
+        super.onSaveInstanceState(outState);
+    }
+
 }

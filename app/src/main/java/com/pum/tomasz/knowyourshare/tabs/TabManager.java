@@ -128,34 +128,6 @@ public class TabManager implements View.OnClickListener{
 
 
         }
-
-
-
-//        TabInfo newTab = this.mapTabInfo.get(v.getId());
-//        if (mLastTab != newTab) {
-//            blockTab((ImageButton) v);
-//            Log.d(Utilities.TAG, "Changed to " + newTab.getTag() + " tab");
-//            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-//            if (mLastTab != null) {
-//                unblockTab((ImageButton) activity.findViewById(mLastTab.getViewId()));
-//                Log.d(Utilities.TAG, "Previously was on " + mLastTab.getTag() + " tab");
-//                if (mLastTab.getFragment() != null) {
-//                    ft.detach(mLastTab.getFragment());
-//                }
-//            }
-//            if (newTab != null) {
-//                if (newTab.getFragment() == null) {
-//                    newTab.setFragment(Fragment.instantiate(activity,
-//                            newTab.getClss().getName(), newTab.getArgs()));
-//                    ft.add(R.id.main_panel, newTab.getFragment(), newTab.getTag());
-//                } else {
-//                    ft.attach(newTab.getFragment());
-//                }
-//            }
-//            mLastTab = newTab;
-//            ft.commit();
-//            activity.getFragmentManager().executePendingTransactions();
-//        }
     }
 
 

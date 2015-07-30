@@ -119,7 +119,7 @@ public class ProductDatabaseFacade {
         Cursor cur = null;
         try {
             cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
-                    null, null, null, null, "title", null);
+                    null, null, null, null, "name", null);
             extractProductsFromCursor(result, cur);
         } catch (SQLException e) {
             Log.e("topics.database", "Error searching application database.", e);
@@ -138,9 +138,9 @@ public class ProductDatabaseFacade {
         Cursor cur = null;
         try {
             cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
-                    null, null, null, null, "title", null);
+                    null, null, null, null, "name", null);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utilities.TAG, "Error searching application database.", e);
             cur = null;
         }
         return cur;
@@ -151,11 +151,18 @@ public class ProductDatabaseFacade {
         if (cur.moveToFirst()) {
             for (int i = 0; i < cur.getCount(); i++) {
                 Product p = new Product();
-                p.setId(cur.getLong(0));
-                p.setName(cur.getString(1));
-                p.setBuyDate(cur.getString(2));
-                p.setSize(cur.getDouble(3));
-                p.setMeasureUnitTypeEnum(MeasureUnitTypeEnum.valueOf(cur.getString(4)));
+                p.setId(cur.getLong(ProductRecordColumnsEnum.id.getIndex()));
+                p.setName(cur.getString(ProductRecordColumnsEnum.name.getIndex()));
+                p.setBuyDate(cur.getString(ProductRecordColumnsEnum.buyDate.getIndex()));
+                p.setSize(cur.getDouble(ProductRecordColumnsEnum.size.getIndex()));
+
+                String unitStr =  cur.getString(ProductRecordColumnsEnum.unit.getIndex());
+                MeasureUnitTypeEnum unitEnum = MeasureUnitTypeEnum.valueOf(unitStr);
+
+                p.setMeasureUnitTypeEnum(unitEnum);
+
+                double price = cur.getDouble(ProductRecordColumnsEnum.price.getIndex());
+                p.setPrice(price);
 
                 list.add(p);
 

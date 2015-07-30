@@ -28,11 +28,12 @@ public class ProductDbOpenHelper extends SQLiteOpenHelper {
         sqlBuilder.append("CREATE TABLE ").append(TABLE_PRODUCT).append(" (");
         sqlBuilder.append("_id INTEGER PRIMARY KEY, ");
         sqlBuilder.append("name TEXT NOT NULL, ");
-        sqlBuilder.append("buy_date TEXT, ");
+        sqlBuilder.append("buy_date TEXT NOT NULL, ");
         sqlBuilder.append("end_of_usage_date TEXT, ");
         sqlBuilder.append("size REAL, ");
-        sqlBuilder.append("unit TEXT");
+        sqlBuilder.append("unit TEXT NOT NULL, ");
         sqlBuilder.append("expiration_date TEXT, ");
+        sqlBuilder.append("price REAL ");
         sqlBuilder.append(");");
 
         try {

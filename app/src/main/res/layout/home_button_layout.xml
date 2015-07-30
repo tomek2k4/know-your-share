@@ -36,7 +36,7 @@
         android:layout_width="@dimen/home_button_picture_size"
         android:layout_height="fill_parent"
         android:layout_gravity="right"
-        android:gravity="center_vertical"
+        android:gravity="right"
         android:duplicateParentState="true"
         android:textStyle="bold"
         android:textSize="15dp"/>

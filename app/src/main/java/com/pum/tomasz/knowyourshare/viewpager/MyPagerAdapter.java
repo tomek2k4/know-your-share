@@ -26,7 +26,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.On
     private ViewChangeListener viewChangeListener = null;
 
     public void removeAllFragments() {
-
         if ( tabInfoList != null ) {
             for ( TabInfo tabInfo : tabInfoList ) {
                 Fragment fragment = tabInfo.getFragment();

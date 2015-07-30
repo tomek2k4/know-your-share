@@ -16,10 +16,10 @@ public class Product {
     private Date buyDate;
     private Date endOfUsageDate;
     private double size;
-    private MeasureUnit unit;
-
+    private MeasureUnit unit = null;
     //optional fields
     private Date expirationDate;
+    private double price;
 
     public Product() {
     }
@@ -77,7 +77,11 @@ public class Product {
     }
 
     public void setMeasureUnitTypeEnum(MeasureUnitTypeEnum measureUnitTypeEnum) {
-        this.unit.setMeasureUnitTypeEnum(measureUnitTypeEnum);
+        if(unit==null){
+            unit = new MeasureUnit(measureUnitTypeEnum);
+        }else{
+            this.unit.setMeasureUnitTypeEnum(measureUnitTypeEnum);
+        }
     }
 
     public Date getExpirationDate() {
@@ -86,5 +90,9 @@ public class Product {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
