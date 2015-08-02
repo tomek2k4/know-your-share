@@ -3,15 +3,19 @@ package com.pum.tomasz.knowyourshare;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-
 import android.database.Cursor;
+import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
@@ -21,9 +25,12 @@ import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
+import com.pum.tomasz.knowyourshare.recyclerview.MyRecyclerViewAdapter;
 
 import java.util.LinkedList;
 import java.util.List;
+
+
 
 /**
  * Created by tomasz on 14.07.2015.
@@ -44,7 +51,11 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     private Cursor listCursor = null;
     private ProductsListConfigurationEnum productsListConfiguration;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (container == null) {
@@ -65,32 +76,49 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     private void initializeProductsLayoutComponents(View rootView) {
-        
+
         addButton = (Button) rootView.findViewById(R.id.add_button);
+
+
         addButton.setOnClickListener(this);
 
         //InitializelList
-        initializeListView(rootView);
+        initializeRecyclerView(rootView);
 
     }
 
-    private void initializeListView(View rootView) {
+    private void initializeRecyclerView(View rootView) {
 
-        listView = (ListView) rootView.findViewById(R.id.products_list_view);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
 
-        listAdapter = new SimpleCursorAdapter(getActivity(),R.layout.product_row_layout,listCursor,
-                new String[] {"name", "buy_date"},
-                new int[] {R.id.row_product_name_textview,
-                        R.id.row_buy_date_textview}, 0);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
-        listView.setAdapter(listAdapter);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        //listView.setSelector(R.drawable.list_item_selector);
-        //listView.setSelected(true);
+        // specify an adapter
+        mAdapter = new MyRecyclerViewAdapter(data);
+        mRecyclerView.setAdapter(mAdapter);
+
+//        listView = (ListView) rootView.findViewById(R.id.products_list_view);
+//
+//        listAdapter = new SimpleCursorAdapter(getActivity(),R.layout.product_row_layout,listCursor,
+//                new String[] {"name", "buy_date"},
+//                new int[] {R.id.row_product_name_textview,
+//                        R.id.row_buy_date_textview}, 0);
+//
+//        listView.setAdapter(listAdapter);
+//
+//        //listView.setSelector(R.drawable.list_item_selector);
+//        //listView.setSelected(true);
 
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,15 +137,12 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
             productsListConfiguration = ProductsListConfigurationEnum.ALL_PRODUCTS;
         }
 
-        setListCursor(productsListConfiguration);
-
-
+        setRecyclerAdapter(productsListConfiguration);
     }
 
-    private void setListCursor(ProductsListConfigurationEnum productsListConfiguration) {
+    private void setRecyclerAdapter(ProductsListConfigurationEnum productsListConfiguration) {
 
-        listCursor = ((MainActivity)getActivity()).getProductDatabaseFacade().getCursor(productsListConfiguration);
-        getActivity().startManagingCursor(listCursor);
+        data = ((MainActivity)getActivity()).getProductDatabaseFacade().listAll();
 
     }
 
