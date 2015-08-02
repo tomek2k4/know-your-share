@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
+import com.pum.tomasz.knowyourshare.floatingactionbutton.MyFloatingActionButton;
 import com.pum.tomasz.knowyourshare.recyclerview.MyRecyclerViewAdapter;
 
 import java.util.LinkedList;
@@ -35,7 +37,7 @@ import java.util.List;
 /**
  * Created by tomasz on 14.07.2015.
  */
-public class ProductsFragment extends Fragment implements View.OnClickListener { //extends ListFragment {
+public class ProductsFragment extends Fragment implements View.OnClickListener {
 
     private Activity activity = null;
 
@@ -68,7 +70,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
             // the view hierarchy; it would just never be used.
             return null;
         }
-        View rootView = (FrameLayout)inflater.inflate(R.layout.fragment_products, container, false);
+        View rootView = (FrameLayout) inflater.inflate(R.layout.fragment_products, container, false);
 
         initializeProductsLayoutComponents(rootView);
 
@@ -79,9 +81,8 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
 
     private void initializeProductsLayoutComponents(View rootView) {
 
-        addButton = (Button) rootView.findViewById(R.id.add_button);
-
-
+        // Make this {@link Fragment} listen for changes in both FABs.
+        View addButton = (View) rootView.findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
         //InitializelList
@@ -127,8 +128,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
         Log.d(Utilities.TAG, "ProductsFragment onCreate called");
 
         Bundle arguments = getArguments();
-        if (arguments != null)
-        {
+        if (arguments != null) {
             //Set initial fields values
             productsListConfiguration = ProductsListConfigurationEnum.valueOf(
                     arguments.getString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
@@ -142,7 +142,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
 
     private void setRecyclerAdapter(ProductsListConfigurationEnum productsListConfiguration) {
 
-        data = ((MainActivity)getActivity()).getProductDatabaseFacade().listAll();
+        data = ((MainActivity) getActivity()).getProductDatabaseFacade().listAll();
 
     }
 
@@ -154,6 +154,22 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
+
+//    @Override
+//    public void onCheckedChanged(MyFloatingActionButton fabView, boolean isChecked) {
+//        // When a FAB is toggled, log the action.
+//        switch (fabView.getId()) {
+//            case R.id.fab_1:
+//                Log.d(Utilities.TAG, String.format("FAB 1 was %s.", isChecked ? "checked" : "unchecked"));
+//                break;
+////            case R.id.fab_2:
+////                Log.d(Utilities.TAG, String.format("FAB 2 was %s.", isChecked ? "checked" : "unchecked"));
+////                break;
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     public void onClick(View v) {
