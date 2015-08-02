@@ -21,6 +21,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private String homeTextTitle;
 
     private int numberOfAllProducts = -1;
+    private int numberOfTodayProducts = -1;
 
     private OnHomeFragmentButtonClickListener homeFragmentButtonClickListener = null;
 
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         {
             //Set initial fields values
             numberOfAllProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(),0);
+            numberOfTodayProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(),0);
 
             if (arguments.containsKey(TEXT_TITLE_ID)) {
                 homeTextTitle = getArguments().getString(TEXT_TITLE_ID);
@@ -91,10 +93,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 getResources().getDrawable(R.drawable.search_selected),getString(R.string.show_all_products_string) ,numberOfAllProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.today_products_button_layout),
-                getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,10);
+                getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,numberOfTodayProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.cheapest_products_button_layout),
-                getResources().getDrawable(R.drawable.dollar_sign),getString(R.string.show_chepeast_products_string) ,20);
+                getResources().getDrawable(R.drawable.dollar_sign),getString(R.string.show_chepeast_products_string) ,numberOfAllProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.add_product_home_button_layout),
                 getResources().getDrawable(R.drawable.add_product_home),getString(R.string.add_new_product_string) ,-1);

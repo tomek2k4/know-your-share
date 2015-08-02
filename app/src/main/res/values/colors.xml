@@ -6,4 +6,7 @@
 	<color name="tabDark">#127</color>
 	<color name="tabTransparent">#00ffffff</color>
 
+    <color name="listItemSelectColor">#1fa8de</color>
+	<!--<color name="listItemSelectColor">#eedea41d</color>-->
+
 </resources>

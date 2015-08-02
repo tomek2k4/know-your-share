@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/mainColor">
-<!--
+
     <ListView
         android:elevation="5dp"
         android:id="@+id/products_list_view"
@@ -14,21 +14,21 @@
         android:layout_marginRight="4dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        >
     </ListView>
--->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Products Fragment"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:id="@+id/text_on_products"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Products Fragment"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textSize="15sp"-->
+        <!--android:id="@+id/text_on_products"/>-->
     <Button
         android:background="@drawable/ripple"
-        android:elevation="4dp"
+        android:elevation="10dp"
         android:id="@+id/add_button"
         android:layout_gravity="right|bottom"
         android:layout_height="56dp"

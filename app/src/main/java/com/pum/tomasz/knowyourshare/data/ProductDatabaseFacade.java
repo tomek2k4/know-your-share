@@ -9,6 +9,7 @@ import android.util.Log;
 import com.pum.tomasz.knowyourshare.Utilities;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -133,12 +134,47 @@ public class ProductDatabaseFacade {
     }
 
 
-    public Cursor getCursorForAllProducts() {
+    private Cursor getCursorForAllProducts() {
         validate();
         Cursor cur = null;
         try {
             cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
                     null, null, null, null, "name", null);
+        } catch (SQLException e) {
+            Log.e(Utilities.TAG, "Error searching application database.", e);
+            cur = null;
+        }
+        return cur;
+    }
+
+    public List<Product> listAllToday(){
+        validate();
+        List<Product> result = new LinkedList<Product>();
+        Cursor cur = null;
+        String todayDayString = Utilities.convertDateToString(new Date());
+        Log.d(Utilities.TAG,"Today date is: "+todayDayString);
+        try {
+            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
+                    "buy_date="+"\""+todayDayString+"\"", null, null, null, "name", null);
+            extractProductsFromCursor(result, cur);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+        } finally {
+            if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+
+    private Cursor getCursorForAllTodayProducts() {
+        validate();
+        Cursor cur = null;
+        String todayDayString = Utilities.convertDateToString(new Date());
+        try {
+            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
+                    "buy_date="+"\""+todayDayString+"\"", null, null, null, "name", null);
         } catch (SQLException e) {
             Log.e(Utilities.TAG, "Error searching application database.", e);
             cur = null;
@@ -175,7 +211,20 @@ public class ProductDatabaseFacade {
     private void validate() {
         if (db == null) {
             throw new IllegalStateException(
-                    "Illegal access to the disposed MovieDbHelper object.");
+                    "Illegal access to the disposed ProductDbHelper object.");
         }
+    }
+
+    public Cursor getCursor(ProductsListConfigurationEnum productsListConfiguration) {
+        Cursor result = null;
+        switch (productsListConfiguration){
+            case ALL_PRODUCTS:
+                result = getCursorForAllProducts();
+                break;
+            case TODAY_PRODUCTS:
+                result =  getCursorForAllTodayProducts();
+                break;
+        }
+        return result;
     }
 }

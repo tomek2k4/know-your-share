@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
 import com.pum.tomasz.knowyourshare.data.ProductDbOpenHelper;
+import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.tabs.TabsTagEnum;
@@ -35,7 +36,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     private ProductDbOpenHelper dbOpenHelper = null;
     private ProductDatabaseFacade dbHelper = null;
     private SQLiteDatabase database = null;
-    private Cursor listCursor = null;
 
 
     @Override
@@ -55,13 +55,17 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         }
         List<Product> p = dbHelper.listAll();
         Log.d(Utilities.TAG, "Liczba produktow w bazie: " + p.size());
-        listCursor = dbHelper.getCursorForAllProducts();
-        startManagingCursor(listCursor);
 
+
+        List<Product> tp = dbHelper.listAllToday();
+        Log.d(Utilities.TAG, "Liczba produktow z dzisiaj w bazie: " + tp.size());
 
         Bundle fragmentsInitialArgs = new Bundle();
         //Pass initial information to Fragments
         fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(), p.size());
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(),tp.size());
+        fragmentsInitialArgs.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
+                ProductsListConfigurationEnum.ALL_PRODUCTS.name());
 
         tabManager = new TabManager(this);
         tabManager.initialiseTabManager(fragmentsInitialArgs);
@@ -175,4 +179,15 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dbHelper!=null){
+            dbHelper.dispose();
+        }
+    }
+
+    public ProductDatabaseFacade getProductDatabaseFacade() {
+        return dbHelper;
+    }
 }
