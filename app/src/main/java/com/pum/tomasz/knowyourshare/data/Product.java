@@ -72,8 +72,8 @@ public class Product {
         this.size = size;
     }
 
-    public String getMeasureUnitString() {
-        return unit.getMeasureUnitTypeEnum().name();
+    public String getMeasureUnitTypeString() {
+        return unit.getMeasureUnitTypeEnum().name().toLowerCase();
     }
 
     public void setMeasureUnitTypeEnum(MeasureUnitTypeEnum measureUnitTypeEnum) {
@@ -82,6 +82,10 @@ public class Product {
         }else{
             this.unit.setMeasureUnitTypeEnum(measureUnitTypeEnum);
         }
+    }
+
+    public String getMeasureUnitString(){
+        return unit.getUnitsName();
     }
 
     public Date getExpirationDate() {
@@ -95,4 +99,6 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+
+
 }

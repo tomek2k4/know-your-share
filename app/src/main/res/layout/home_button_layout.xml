@@ -35,11 +35,12 @@
         android:id="@+id/text_elements_home_button"
         android:layout_width="@dimen/home_button_picture_size"
         android:layout_height="fill_parent"
-        android:layout_gravity="right"
-        android:gravity="right"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|right"
         android:duplicateParentState="true"
         android:textStyle="bold"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:text="0"/>
 
 
 

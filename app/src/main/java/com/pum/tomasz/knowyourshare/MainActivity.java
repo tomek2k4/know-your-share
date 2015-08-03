@@ -1,8 +1,6 @@
 package com.pum.tomasz.knowyourshare;
 
 
-
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,19 +51,26 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         if (dbHelper == null) {
             dbHelper = new ProductDatabaseFacade(database);
         }
-        List<Product> p = dbHelper.listAll();
+
+        List<Product> p = dbHelper.getList(ProductsListConfigurationEnum.ALL_PRODUCTS);
         Log.d(Utilities.TAG, "Liczba produktow w bazie: " + p.size());
 
 
-        List<Product> tp = dbHelper.listAllToday();
+        List<Product> tp = dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS);
         Log.d(Utilities.TAG, "Liczba produktow z dzisiaj w bazie: " + tp.size());
 
         Bundle fragmentsInitialArgs = new Bundle();
         //Pass initial information to Fragments
         fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(), p.size());
-        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(),tp.size());
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(), tp.size());
         fragmentsInitialArgs.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
                 ProductsListConfigurationEnum.ALL_PRODUCTS.name());
+        if(savedInstanceState!=null){
+            String savedProducListConfigurationString =
+                    savedInstanceState.getString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
+                            ProductsListConfigurationEnum.ALL_PRODUCTS.name());
+            fragmentsInitialArgs.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),savedProducListConfigurationString);
+        }
 
         tabManager = new TabManager(this);
         tabManager.initialiseTabManager(fragmentsInitialArgs);
@@ -118,13 +123,22 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     @Override
     public void onHomeFragmentButtonClick(int id) {
+        ProductsFragment pf;
+
         switch (id){
             case R.id.all_products_button_layout:
                 Log.d(Utilities.TAG,"Clicked on show all products button");
+                pf =(ProductsFragment)
+                        tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue()).getFragment();
+                pf.updateListConfiguration(ProductsListConfigurationEnum.ALL_PRODUCTS);
                 ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(TabsTagEnum.PRODUCTS.getValue(), true);
                 break;
             case R.id.today_products_button_layout:
-                Log.d(Utilities.TAG,"Clicked on show today's products button");
+                Log.d(Utilities.TAG, "Clicked on show today's products button");
+                pf =(ProductsFragment)
+                        tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue()).getFragment();
+                pf.updateListConfiguration(ProductsListConfigurationEnum.TODAY_PRODUCTS);
+
                 ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(TabsTagEnum.PRODUCTS.getValue(), true);
                 break;
             case R.id.cheapest_products_button_layout:
@@ -175,6 +189,14 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(BundleKeyEnum.LAST_KNOWN_TAB.name(), tabManager.getCurrentTabId()); //save the tab selected
+
+        //Save current configuration of products list
+        ProductsFragment pf = (ProductsFragment)
+                tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue()).getFragment();
+        if (pf != null){
+            outState.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),pf.getCurrentListConfiguratio().name());
+        }
+
         ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
         super.onSaveInstanceState(outState);
     }

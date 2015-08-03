@@ -4,29 +4,69 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:weightSum="1">
 
-    <TextView
-        android:id="@+id/row_product_name_textview"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
         android:padding="10dp"
-        android:text="Fake"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="left"
+        android:gravity="left"
         >
-    </TextView>
 
+        <TextView
+            android:id="@+id/row_product_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fake"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/row_buy_date_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/secondary_text_dark"
+            android:text="date" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/row_buy_date_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
         android:padding="10dp"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/secondary_text_dark"
-        android:text="date" />
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/row_product_value_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="16sp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            >
+        </TextView>
+
+        <TextView
+            android:id="@+id/row_product_unit_type_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kg"
+            android:textSize="16sp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="center_vertical"
+            >
+        </TextView>
+
+    </LinearLayout>
+
 
 </LinearLayout>

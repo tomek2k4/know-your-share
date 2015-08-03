@@ -27,6 +27,9 @@ public class MeasureUnit {
             case LENGTH:
                 if(imperial) return "foot";
                 else return "m";
+            case QUANTITY:
+                if(imperial) return "unit";
+                else return "unit";
         }
 
         if(imperial) return "ounce";

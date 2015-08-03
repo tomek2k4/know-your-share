@@ -37,7 +37,7 @@ public class ProductDatabaseFacade {
         v.put("name", p.getName());
         v.put("buy_date", Utilities.convertDateToString(p.getBuyDate()));
         v.put("size", p.getSize());
-        v.put("unit", p.getMeasureUnitString());
+        v.put("unit", p.getMeasureUnitTypeString());
 
         long id = db.insert(ProductDbOpenHelper.TABLE_PRODUCT, null, v);
         if (id >= 0) {
@@ -51,7 +51,7 @@ public class ProductDatabaseFacade {
         v.put("name", p.getName());
         v.put("buy_date", Utilities.convertDateToString(p.getBuyDate()));
         v.put("size", p.getSize());
-        v.put("unit", p.getMeasureUnitString());
+        v.put("unit", p.getMeasureUnitTypeString());
 
         int rowsAffected = db.update(ProductDbOpenHelper.TABLE_PRODUCT, v, "_id="
                 + p.getId(), null);
@@ -103,7 +103,7 @@ public class ProductDatabaseFacade {
                     "name='" + name + "'", null, null, null, "date", null);
             extractProductsFromCursor(result, cur);
         } catch (SQLException e) {
-            Log.e("topics.database", "Error searching application database.", e);
+            Log.e(Utilities.TAG, "Error searching application database.", e);
         } finally {
             if (cur != null && !cur.isClosed()) {
                 cur.close();
@@ -114,7 +114,37 @@ public class ProductDatabaseFacade {
     }
 
 
-    public List<Product> listAll() {
+    public Cursor getCursor(ProductsListConfigurationEnum productsListConfiguration) {
+        Cursor result = null;
+        switch (productsListConfiguration){
+            case ALL_PRODUCTS:
+                result = getCursorForAllProducts();
+                break;
+            case TODAY_PRODUCTS:
+                result =  getCursorForAllTodayProducts();
+                break;
+        }
+        return result;
+    }
+
+
+    public List<Product> getList(ProductsListConfigurationEnum productsListConfiguration){
+        List<Product> result = null;
+        switch (productsListConfiguration){
+            case ALL_PRODUCTS:
+                result = listAll();
+                break;
+            case TODAY_PRODUCTS:
+                result =  listAllToday();
+                break;
+        }
+        return result;
+    }
+
+
+
+
+    private List<Product> listAll() {
         validate();
         List<Product> result = new LinkedList<Product>();
         Cursor cur = null;
@@ -147,7 +177,7 @@ public class ProductDatabaseFacade {
         return cur;
     }
 
-    public List<Product> listAllToday(){
+    private List<Product> listAllToday(){
         validate();
         List<Product> result = new LinkedList<Product>();
         Cursor cur = null;
@@ -215,16 +245,5 @@ public class ProductDatabaseFacade {
         }
     }
 
-    public Cursor getCursor(ProductsListConfigurationEnum productsListConfiguration) {
-        Cursor result = null;
-        switch (productsListConfiguration){
-            case ALL_PRODUCTS:
-                result = getCursorForAllProducts();
-                break;
-            case TODAY_PRODUCTS:
-                result =  getCursorForAllTodayProducts();
-                break;
-        }
-        return result;
-    }
+
 }

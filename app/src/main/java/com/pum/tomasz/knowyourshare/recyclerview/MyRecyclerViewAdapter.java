@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pum.tomasz.knowyourshare.R;
+import com.pum.tomasz.knowyourshare.Utilities;
 import com.pum.tomasz.knowyourshare.data.Product;
 
 import java.util.List;
@@ -24,10 +25,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        public TextView mProductNameTextView;
+        public TextView mDateTextView;
+        public TextView mValueTextView;
+        public TextView mUnitTypeTextView;
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.row_product_name_textview);
+            mProductNameTextView = (TextView) v.findViewById(R.id.row_product_name_textview);
+            mDateTextView = (TextView) v.findViewById(R.id.row_buy_date_textview);
+            mValueTextView = (TextView) v.findViewById(R.id.row_product_value_textview);
+            mUnitTypeTextView = (TextView) v.findViewById(R.id.row_product_unit_type_textview);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v)
@@ -59,7 +66,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(MyRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        viewHolder.mTextView.setText(list.get(position).getName());
+        viewHolder.mProductNameTextView.setText(list.get(position).getName());
+        viewHolder.mDateTextView.setText(Utilities.convertDateToString(list.get(position).getBuyDate()));
+        viewHolder.mValueTextView.setText(Utilities.DOUBLE_CUT_ZERO_FMT.format(list.get(position).getSize()));
+        viewHolder.mUnitTypeTextView.setText(list.get(position).getMeasureUnitString());
     }
 
     @Override

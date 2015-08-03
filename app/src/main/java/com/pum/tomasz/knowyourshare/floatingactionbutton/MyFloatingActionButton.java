@@ -89,7 +89,7 @@ public class MyFloatingActionButton extends FrameLayout implements Checkable {
         mChecked = checked;
 
         // Now refresh the drawable state (so the icon changes)
-        refreshDrawableState();
+        //refreshDrawableState();
 
         if (mOnClickListener != null) {
             mOnClickListener.onClick(this);
