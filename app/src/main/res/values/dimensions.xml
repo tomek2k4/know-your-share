@@ -8,7 +8,7 @@
     <dimen name="tab_space_unselected_top">6sp</dimen>
     <dimen name="home_button_picture_size">50dp</dimen>
 
-    <dimen name="fab_elevation">8dp</dimen>
+    <dimen name="fab_elevation">10dp</dimen>
     <dimen name="fab_press_translation_z">9dp</dimen>
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_size_small">40dp</dimen>

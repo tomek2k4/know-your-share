@@ -15,6 +15,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="show_all_products_string">Show all products</string>
     <string name="show_today_products_string">Show today\'s products</string>
-    <string name="show_chepeast_products_string">Show frequently bought products</string>
+    <string name="show_frequently_bought_products_string">Show frequently bought products</string>
     <string name="add_new_product_string">Add a new product</string>
 </resources>

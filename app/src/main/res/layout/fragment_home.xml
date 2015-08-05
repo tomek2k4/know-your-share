@@ -32,39 +32,12 @@
             />
 
         <include
-            android:id="@+id/cheapest_products_button_layout"
+            android:id="@+id/frequently_bought_products_button_layout"
             layout="@layout/home_button_layout"
             android:layout_height="@dimen/home_button_height"
             android:layout_width="fill_parent"
             />
 
-
-        <!--<Button-->
-            <!--android:id="@+id/show_all_button"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp"/>-->
-
-        <!--<Button-->
-            <!--android:id="@+id/show_today_button"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp"/>-->
-
-        <!--<Button-->
-            <!--android:id="@+id/show_"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginBottom="10dp"/>-->
 
     </LinearLayout>
 
@@ -85,17 +58,5 @@
             />
 
     </LinearLayout>
-
-
-
-    <TextView
-        android:id="@+id/home_text_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="15sp"/>
-
 
 </LinearLayout>

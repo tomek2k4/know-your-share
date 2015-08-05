@@ -137,6 +137,9 @@ public class ProductDatabaseFacade {
             case TODAY_PRODUCTS:
                 result =  listAllToday();
                 break;
+            case FREQUENTLY_BOUGHT_PRODUCTS:
+                result =  listAllFrequentlyBought();
+                break;
         }
         return result;
     }
@@ -203,14 +206,48 @@ public class ProductDatabaseFacade {
         Cursor cur = null;
         String todayDayString = Utilities.convertDateToString(new Date());
         try {
-            cur = db.query(true, ProductDbOpenHelper.TABLE_PRODUCT, null /* all */,
-                    "buy_date="+"\""+todayDayString+"\"", null, null, null, "name", null);
+            cur = db.query(true,
+                    ProductDbOpenHelper.TABLE_PRODUCT,
+                    null /* all */,
+                    "buy_date="+"\""+todayDayString+"\"",
+                    null, null, null, "name", null);
         } catch (SQLException e) {
             Log.e(Utilities.TAG, "Error searching application database.", e);
             cur = null;
         }
         return cur;
     }
+
+
+    private List<Product> listAllFrequentlyBought(){
+        validate();
+        List<Product> result = new LinkedList<Product>();
+        Cursor cur = null;
+        try {
+            cur = db.query(true,
+                    ProductDbOpenHelper.TABLE_PRODUCT,
+                    new String[] {"_id","name","buy_date","end_of_usage_date","size","unit","expiration_date","price","COUNT(*) AS occurences"} ,
+                    null,//"_id IN (SELECT MIN(_id) FROM product GROUP BY name,size,unit)",
+                    null,
+                    "name,size,unit",
+                    null,
+                    "occurences  DESC",
+                    null,
+                    null);
+            extractProductsFromCursor(result, cur);
+        } catch (SQLException e) {
+            Log.e("topics.database", "Error searching application database.", e);
+        } finally {
+            if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+
+
+
 
 
     private void extractProductsFromCursor(List<Product> list, Cursor cur) {
@@ -224,7 +261,6 @@ public class ProductDatabaseFacade {
 
                 String unitStr =  cur.getString(ProductRecordColumnsEnum.unit.getIndex());
                 MeasureUnitTypeEnum unitEnum = MeasureUnitTypeEnum.valueOf(unitStr);
-
                 p.setMeasureUnitTypeEnum(unitEnum);
 
                 double price = cur.getDouble(ProductRecordColumnsEnum.price.getIndex());
