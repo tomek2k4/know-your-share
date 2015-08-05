@@ -52,20 +52,10 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             dbHelper = new ProductDatabaseFacade(database);
         }
 
-        List<Product> p = dbHelper.getList(ProductsListConfigurationEnum.ALL_PRODUCTS);
-        Log.d(Utilities.TAG, "Number of products: " + p.size());
-
-        List<Product> tp = dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS);
-        Log.d(Utilities.TAG, "Number of today's products: " + tp.size());
-
-        List<Product> fp = dbHelper.getList(ProductsListConfigurationEnum.FREQUENTLY_BOUGHT_PRODUCTS);
-        Log.d(Utilities.TAG, "Number of frequently bought products: " + fp.size());
-
         Bundle fragmentsInitialArgs = new Bundle();
-        //Pass initial information to Fragments
-        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(), p.size());
-        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(), tp.size());
-        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_FREQUENTLY_BOUGHT_PRODUCTS.name(), fp.size());
+
+        fillBundleForHomeFragment(fragmentsInitialArgs);
+
         fragmentsInitialArgs.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
                 ProductsListConfigurationEnum.ALL_PRODUCTS.name());
         if(savedInstanceState!=null){
@@ -83,6 +73,23 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
         //initialsie the pager
         this.initialisePaging();
+
+    }
+
+    private void fillBundleForHomeFragment(Bundle fragmentsInitialArgs) {
+        List<Product> p = dbHelper.getList(ProductsListConfigurationEnum.ALL_PRODUCTS);
+        Log.d(Utilities.TAG, "Number of products: " + p.size());
+
+        List<Product> tp = dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS);
+        Log.d(Utilities.TAG, "Number of today's products: " + tp.size());
+
+        List<Product> fp = dbHelper.getList(ProductsListConfigurationEnum.FREQUENTLY_BOUGHT_PRODUCTS);
+        Log.d(Utilities.TAG, "Number of frequently bought products: " + fp.size());
+
+        //Pass initial information to Fragments
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(), p.size());
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(), tp.size());
+        fragmentsInitialArgs.putInt(BundleKeyEnum.NUMBER_OF_FREQUENTLY_BOUGHT_PRODUCTS.name(), fp.size());
 
     }
 
@@ -106,10 +113,17 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             Log.d(Utilities.TAG, "Pressed tab with index: " + new Integer(position).toString());
             ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(position, true);
 
-            if(position==0)
+            if(position==TabsTagEnum.HOME.getValue())
             {
                 Log.d(Utilities.TAG, "Clicked on tab 0, update home fragment");
                 TabInfo tabInfo = tabManager.getTabInfoList().get(position);
+                Bundle homeFragmentArgs = new Bundle();
+                fillBundleForHomeFragment(homeFragmentArgs);
+
+                HomeFragment hf = (HomeFragment) tabInfo.getFragment();
+                if(hf != null){
+                    hf.update(homeFragmentArgs);
+                }
             }
         }
     }

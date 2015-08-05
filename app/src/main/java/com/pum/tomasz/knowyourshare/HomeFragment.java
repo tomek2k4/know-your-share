@@ -62,9 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         if (arguments != null)
         {
             //Set initial fields values
-            numberOfAllProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(),0);
-            numberOfTodayProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(),0);
-            numberOfFrequentlyBoughtProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_FREQUENTLY_BOUGHT_PRODUCTS.name(),0);
+            update(arguments);
         } else {
             // no arguments supplied...
         }
@@ -79,7 +77,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 getResources().getDrawable(R.drawable.today_sign),getString(R.string.show_today_products_string) ,numberOfTodayProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.frequently_bought_products_button_layout),
-                getResources().getDrawable(R.drawable.star_big_on),getString(R.string.show_frequently_bought_products_string) ,numberOfFrequentlyBoughtProducts);
+                getResources().getDrawable(R.drawable.star_big_on),getString(R.string.show_frequently_bought_products_string),numberOfFrequentlyBoughtProducts);
 
         initializeLayoutButton(rootView.findViewById(R.id.add_product_home_button_layout),
                 getResources().getDrawable(R.drawable.add_product_home),getString(R.string.add_new_product_string) ,-1);
@@ -109,6 +107,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    public void update(Bundle arguments){
+        numberOfAllProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_PRODUCTS.name(),0);
+        numberOfTodayProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_TODAY_PRODUCTS.name(),0);
+        numberOfFrequentlyBoughtProducts = arguments.getInt(BundleKeyEnum.NUMBER_OF_FREQUENTLY_BOUGHT_PRODUCTS.name(),0);
+
+        View view = getView();
+        if(view!=null){
+            initializeHomeLayoutComponents(view);
+        }
+    }
 
     @Override
     public void onClick(View v) {
