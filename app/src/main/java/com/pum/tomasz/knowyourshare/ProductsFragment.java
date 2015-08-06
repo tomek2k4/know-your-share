@@ -1,6 +1,7 @@
 package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,6 +36,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private View addButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +88,9 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Log.d(Utilities.TAG,"Clicked on add button");
+
+        Intent i = new Intent(getActivity(), ProductAddActivity.class);
+        startActivity(i);
     }
 
     public void updateListConfiguration(ProductsListConfigurationEnum plc){
@@ -108,7 +113,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     private void initializeProductsLayoutComponents(View rootView) {
 
         // Make this {@link Fragment} listen for changes in both FABs.
-        View addButton = (View) rootView.findViewById(R.id.add_button);
+        addButton = (View) rootView.findViewById(R.id.add_button);
         addButton.setOnClickListener(this);
 
         //InitializelList

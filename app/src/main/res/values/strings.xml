@@ -17,4 +17,6 @@
     <string name="show_today_products_string">Show today\'s products</string>
     <string name="show_frequently_bought_products_string">Show frequently bought products</string>
     <string name="add_new_product_string">Add a new product</string>
+    <string name="new_product_hint">Product Name</string>
+    <string name="title_activity_product_add">Add a new product</string>
 </resources>

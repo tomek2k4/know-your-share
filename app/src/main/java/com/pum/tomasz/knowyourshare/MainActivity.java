@@ -1,6 +1,7 @@
 package com.pum.tomasz.knowyourshare;
 
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -167,6 +168,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 break;
             case R.id.add_product_home_button_layout:
                 Log.d(Utilities.TAG,"Clicked on add new product button");
+                Intent i = new Intent(this, ProductAddActivity.class);
+                startActivity(i);
                 break;
         }
     }
