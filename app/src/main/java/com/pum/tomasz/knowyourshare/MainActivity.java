@@ -214,10 +214,14 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         outState.putInt(BundleKeyEnum.LAST_KNOWN_TAB.name(), tabManager.getCurrentTabId()); //save the tab selected
 
         //Save current configuration of products list
-        ProductsFragment pf = (ProductsFragment)
-                tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue()).getFragment();
-        if (pf != null){
-            outState.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),pf.getCurrentListConfiguratio().name());
+        try{
+            ProductsFragment pf = (ProductsFragment)
+                    tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue()).getFragment();
+            if (pf != null){
+                outState.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),pf.getCurrentListConfiguratio().name());
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            Log.e(Utilities.TAG,"Out of bound on TabInfoList, need to initialize it: "+e.getStackTrace().toString());
         }
 
         ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
