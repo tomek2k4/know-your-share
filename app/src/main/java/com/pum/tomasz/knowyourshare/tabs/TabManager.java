@@ -28,7 +28,7 @@ import java.util.Vector;
 public class TabManager implements View.OnClickListener{
 
     private HashMap<Integer, TabInfo> mapTabInfo = new HashMap<Integer, TabInfo>();
-    List<TabInfo> tabInfoList = new Vector<TabInfo>();
+    private List<TabInfo> tabInfoList = new Vector<TabInfo>();
 
     private TabInfo mLastTab = null;
     private Stack<Integer> fragmentTabsStack = null;

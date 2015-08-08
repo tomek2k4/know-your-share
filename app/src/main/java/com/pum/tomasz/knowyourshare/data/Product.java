@@ -73,7 +73,7 @@ public class Product {
     }
 
     public String getMeasureUnitTypeString() {
-        return unit.getMeasureUnitTypeEnum().name().toLowerCase();
+        return unit.getMeasureUnitTypeEnum().name();
     }
 
     public void setMeasureUnitTypeEnum(MeasureUnitTypeEnum measureUnitTypeEnum) {

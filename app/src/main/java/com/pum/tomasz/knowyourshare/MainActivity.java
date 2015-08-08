@@ -211,6 +211,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     }
 
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d(Utilities.TAG,"MainActivity onSaveInstanceState() called");
+
         outState.putInt(BundleKeyEnum.LAST_KNOWN_TAB.name(), tabManager.getCurrentTabId()); //save the tab selected
 
         //Save current configuration of products list
@@ -225,7 +227,39 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         }
 
         ((MyPagerAdapter)mPagerAdapter).removeAllFragments();
+
+        //Null tabManager and viewPager ,onResume both will be recreated
+        tabManager = null;
+        mPagerAdapter = null;
+
+
         super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    protected void onPause() {
+        Log.d(Utilities.TAG,"MainActivity onPause called");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(Utilities.TAG, "MainActivity onResume() called");
+
+        if(tabManager==null){
+
+            
+        }
+
+
+        Bundle arguments = getIntent().getExtras();
+        tabManager = new TabManager(this);
+        tabManager.initialiseTabManager(arguments);
+        this.initialisePaging();
+
+
+        super.onResume();
     }
 
     @Override

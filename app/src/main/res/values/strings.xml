@@ -16,6 +16,10 @@
     <string name="new_product_hint">Product Name</string>
     <string name="title_activity_product_add">Add a new product</string>
     <string name="add_button_text_string">Add product</string>
+    <string name="new_msg_empty_prduct_name">Please fill name of a product</string>
+    <string name="new_msg_format_buy_date">Enter date in followinf format: YYYY-MM-DD</string>
+    <string name="new_msg_empty_value">Please enter value</string>
+    <string name="new_msg_wrong_value_format">Please enter correct double value</string>
 
     <string-array name="measurement_type_enum_stringarray">
         <item>Quantity</item>
