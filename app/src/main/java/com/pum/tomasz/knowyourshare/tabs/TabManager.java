@@ -39,8 +39,6 @@ public class TabManager implements View.OnClickListener{
     private ImageButton  settingsImageButton;
     private MainActivity activity;
 
-
-
     public interface TabChangeListener {
         public void onTabSelected(int position,boolean isStackTraced);
     }

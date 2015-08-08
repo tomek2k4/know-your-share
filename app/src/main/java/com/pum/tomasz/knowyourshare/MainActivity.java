@@ -211,7 +211,7 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     }
 
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d(Utilities.TAG,"MainActivity onSaveInstanceState() called");
+        Log.d(Utilities.TAG, "MainActivity onSaveInstanceState() called");
 
         outState.putInt(BundleKeyEnum.LAST_KNOWN_TAB.name(), tabManager.getCurrentTabId()); //save the tab selected
 
@@ -232,32 +232,39 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         tabManager = null;
         mPagerAdapter = null;
 
-
+        getIntent().putExtras(outState);
         super.onSaveInstanceState(outState);
     }
 
-
-    @Override
-    protected void onPause() {
-        Log.d(Utilities.TAG,"MainActivity onPause called");
-        super.onPause();
-    }
 
     @Override
     protected void onResume() {
         Log.d(Utilities.TAG, "MainActivity onResume() called");
 
         if(tabManager==null){
+            Bundle arguments = new Bundle();
+            Bundle savedInstance = getIntent().getExtras();
 
-            
+            fillBundleForHomeFragment(arguments);
+
+            arguments.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
+                    ProductsListConfigurationEnum.ALL_PRODUCTS.name());
+            if(savedInstance!=null){
+                String savedProducListConfigurationString =
+                        savedInstance.getString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
+                                ProductsListConfigurationEnum.ALL_PRODUCTS.name());
+                arguments.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),savedProducListConfigurationString);
+            }
+
+            tabManager = new TabManager(this);
+            tabManager.initialiseTabManager(arguments);
+
+            this.initialisePaging();
+
+            if (savedInstance != null) {
+                tabManager.setCurrentTabById(savedInstance.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
+            }
         }
-
-
-        Bundle arguments = getIntent().getExtras();
-        tabManager = new TabManager(this);
-        tabManager.initialiseTabManager(arguments);
-        this.initialisePaging();
-
 
         super.onResume();
     }
