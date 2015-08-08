@@ -53,6 +53,12 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             dbHelper = new ProductDatabaseFacade(database);
         }
 
+        reinitilizeFragments(savedInstanceState);
+
+    }
+
+    private void reinitilizeFragments(Bundle savedInstanceState) {
+
         Bundle fragmentsInitialArgs = new Bundle();
 
         fillBundleForHomeFragment(fragmentsInitialArgs);
@@ -65,16 +71,13 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                             ProductsListConfigurationEnum.ALL_PRODUCTS.name());
             fragmentsInitialArgs.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),savedProducListConfigurationString);
         }
-
         tabManager = new TabManager(this);
         tabManager.initialiseTabManager(fragmentsInitialArgs);
+        //initialsie the pager
+        this.initialisePaging();
         if (savedInstanceState != null) {
             tabManager.setCurrentTabById(savedInstanceState.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
         }
-
-        //initialsie the pager
-        this.initialisePaging();
-
     }
 
     private void fillBundleForHomeFragment(Bundle fragmentsInitialArgs) {
@@ -242,30 +245,9 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         Log.d(Utilities.TAG, "MainActivity onResume() called");
 
         if(tabManager==null){
-            Bundle arguments = new Bundle();
             Bundle savedInstance = getIntent().getExtras();
-
-            fillBundleForHomeFragment(arguments);
-
-            arguments.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
-                    ProductsListConfigurationEnum.ALL_PRODUCTS.name());
-            if(savedInstance!=null){
-                String savedProducListConfigurationString =
-                        savedInstance.getString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),
-                                ProductsListConfigurationEnum.ALL_PRODUCTS.name());
-                arguments.putString(BundleKeyEnum.PRODUCTS_LIST_CONFIGURATION.name(),savedProducListConfigurationString);
-            }
-
-            tabManager = new TabManager(this);
-            tabManager.initialiseTabManager(arguments);
-
-            this.initialisePaging();
-
-            if (savedInstance != null) {
-                tabManager.setCurrentTabById(savedInstance.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
-            }
+            reinitilizeFragments(savedInstance);
         }
-
         super.onResume();
     }
 
