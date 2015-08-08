@@ -20,6 +20,14 @@
     <string name="new_msg_format_buy_date">Enter date in followinf format: YYYY-MM-DD</string>
     <string name="new_msg_empty_value">Please enter value</string>
     <string name="new_msg_wrong_value_format">Please enter correct double value</string>
+    <string name="actionmode_cancel">Action Mode</string>
+
+    <string name="menu_actionmode">Action Mode</string>
+    <string name="actionmode_title">Action Mode</string>
+    <string name="test_action_mode_button">Test action mode</string>
+
+    <string name="action_remove">Remove</string>
+
 
     <string-array name="measurement_type_enum_stringarray">
         <item>Quantity</item>

@@ -9,6 +9,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -170,9 +176,13 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 ((MyPagerAdapter)mPagerAdapter).getViewPager().setCurrentItem(TabsTagEnum.PRODUCTS.getValue(), true);
                 break;
             case R.id.add_product_home_button_layout:
-                Log.d(Utilities.TAG,"Clicked on add new product button");
+                Log.d(Utilities.TAG, "Clicked on add new product button");
                 Intent i = new Intent(this, ProductAddActivity.class);
                 startActivity(i);
+                break;
+            case R.id.test_action_mode_home_button_layout:
+                Log.d(Utilities.TAG, "Clicked on testaction mode button");
+
                 break;
         }
     }
@@ -262,4 +272,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     public ProductDatabaseFacade getProductDatabaseFacade() {
         return dbHelper;
     }
+
+
 }

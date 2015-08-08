@@ -4,14 +4,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
@@ -25,7 +33,7 @@ import java.util.List;
 /**
  * Created by Tomasz Maslon on 14.07.2015.
  */
-public class ProductsFragment extends Fragment implements View.OnClickListener {
+public class ProductsFragment extends Fragment implements View.OnClickListener,RecyclerView.OnItemTouchListener {
 
     private Activity activity = null;
 
@@ -37,6 +45,9 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View addButton;
+
+    GestureDetectorCompat gestureDetector;
+    public ActionMode actionMode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,8 +100,10 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Log.d(Utilities.TAG,"Clicked on add button");
 
-        Intent i = new Intent(getActivity(), ProductAddActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(getActivity(), ProductAddActivity.class);
+//        startActivity(i);
+        getActivity().startActionMode(mCallback);
+
     }
 
     public void updateListConfiguration(ProductsListConfigurationEnum plc){
@@ -138,9 +151,93 @@ public class ProductsFragment extends Fragment implements View.OnClickListener {
         mAdapter = new MyRecyclerViewAdapter(data);
         mRecyclerView.setAdapter(mAdapter);
 
+        // onClickDetection is done in this Activity's onItemTouchListener
+        // with the help of a GestureDetector;
+        // Tip by Ian Lake on G+ in a comment to this post:
+        // https://plus.google.com/+LucasRocha/posts/37U8GWtYxDE
+        mRecyclerView.addOnItemTouchListener(this);
+        gestureDetector =
+                new GestureDetectorCompat(getActivity(), new RecyclerViewDemoOnGestureListener());
+
     }
 
     public ProductsListConfigurationEnum getCurrentListConfiguratio() {
         return productsListConfiguration;
     }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        gestureDetector.onTouchEvent(e);
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+    }
+
+
+    private class RecyclerViewDemoOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+            onClick(view);
+            return super.onSingleTapConfirmed(e);
+        }
+
+        public void onLongPress(MotionEvent e) {
+            View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (actionMode != null) {
+                return;
+            }
+            // Start the CAB using the ActionMode.Callback defined above
+            actionMode = getActivity().startActionMode(mCallback);
+            int idx = mRecyclerView.getChildPosition(view);
+            myToggleSelection(idx);
+            super.onLongPress(e);
+        }
+    }
+
+    private void myToggleSelection(int idx) {
+        
+    }
+
+
+    private ActionMode.Callback mCallback = new ActionMode.Callback()
+    {
+        @Override
+        public boolean onPrepareActionMode( ActionMode mode, Menu menu )
+        {
+            return false;
+        }
+        @Override
+        public void onDestroyActionMode( ActionMode mode )
+        {
+            actionMode = null;
+        }
+
+        @Override
+        public boolean onCreateActionMode( ActionMode mode, Menu menu )
+        {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_cab_fragment_products, menu);
+
+            return true;
+        }
+        @Override
+        public boolean onActionItemClicked( ActionMode mode, MenuItem item )
+        {
+            boolean ret = false;
+            if(item.getItemId() == R.id.actionmode_cancel)
+            {
+                mode.finish();
+                ret = true;
+            }
+            return ret;
+        }
+    };
+
+
+
+
 }
