@@ -18,11 +18,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
+import com.pum.tomasz.knowyourshare.floatingactionbutton.MyFloatingActionButton;
 import com.pum.tomasz.knowyourshare.recyclerview.DividerItemDecoration;
 import com.pum.tomasz.knowyourshare.recyclerview.MyRecyclerViewAdapter;
 
@@ -47,7 +50,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private View addButton;
+    private View addButton = null;
 
     GestureDetectorCompat gestureDetector;
     public ActionMode actionMode;
@@ -104,9 +107,13 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         if(v!=null){
             if(v.getId() == R.id.add_button){
-                Log.d(Utilities.TAG, "Clicked on add button");
-                Intent i = new Intent(getActivity(), ProductAddActivity.class);
-                startActivity(i);
+                if(!isAddButtonShare()){
+                    Log.d(Utilities.TAG, "Clicked on add button");
+                    Intent i = new Intent(getActivity(), ProductAddActivity.class);
+                    startActivity(i);
+                }else {
+                    Log.d(Utilities.TAG, "Clicked on share button");
+                }
             }
         }
     }
@@ -197,6 +204,30 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
 
     }
 
+    public void setAddButtonToShare(boolean addButtonToShare) {
+        if(addButton!=null){
+            if(addButton instanceof MyFloatingActionButton){
+                ((MyFloatingActionButton) addButton).setChecked(addButtonToShare);
+            }else{
+                ((ImageButton)addButton).setSelected(addButtonToShare);
+            }
+        }
+    }
+
+
+    public boolean isAddButtonShare() {
+        if(addButton!=null){
+            if(addButton instanceof MyFloatingActionButton){
+                return ((MyFloatingActionButton) addButton).isChecked();
+            }else{
+                return ((ImageButton)addButton).isSelected();
+            }
+        }
+        return false;
+    }
+
+
+
     private class RecyclerViewDemoOnGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -240,6 +271,9 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
             actionMode = null;
             ((MyRecyclerViewAdapter)mAdapter).clearSelections();
             //fab.setVisibility(View.VISIBLE);
+
+            setAddButtonToShare(false);
+
             longTouchIndex = -1;
         }
 
@@ -249,6 +283,9 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_cab_fragment_products, menu);
             //fab.setVisibility(View.GONE);
+
+            setAddButtonToShare(true);
+
             return true;
         }
         @Override

@@ -19,7 +19,7 @@
         android:enterFadeDuration="@android:integer/config_shortAnimTime">
 
     <item android:state_checked="true">
-        <bitmap android:src="@drawable/ic_add" android:tint="@android:color/white" />
+        <bitmap android:src="@drawable/ic_menu_share" android:tint="@android:color/white" />
     </item>
 
     <item>

@@ -5,7 +5,7 @@
         <ripple android:color="@android:color/holo_blue_light">
             <item>
                 <shape>
-                    <solid android:color="@color/tabDark" />
+                    <solid android:color="@color/fab_color_2" />
                 </shape>
             </item>
         </ripple>

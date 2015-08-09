@@ -15,21 +15,16 @@
         android:scrollbars="vertical">
     </android.support.v7.widget.RecyclerView>
 
-    <Button
+
+    <ImageButton
         android:id="@+id/add_button"
-        android:background="@drawable/ripple"
-        android:elevation="4dp"
-        android:layout_gravity="right|bottom"
+        android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
+        android:src="@drawable/fab_icons"
+        android:background="@drawable/fab_background"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:layout_width="@dimen/fab_size"
-        android:text="+"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
-        android:translationZ="5dp"
-        android:layout_alignParentBottom="true">
-    </Button>
+        android:layout_gravity="right|bottom"
+        />
 
 </FrameLayout>
