@@ -1,6 +1,7 @@
 package com.pum.tomasz.knowyourshare.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.pum.tomasz.knowyourshare.R;
 import com.pum.tomasz.knowyourshare.Utilities;
 import com.pum.tomasz.knowyourshare.data.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +20,14 @@ import java.util.List;
  */
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
     List<Product> list;
+    private SparseBooleanArray selectedItems;
 
+    private static OnProductItemClickListener productItemClickListener = null;
+
+
+    public interface OnProductItemClickListener{
+        public void onProductItemClick(int position);
+    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -37,16 +46,22 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             mUnitTypeTextView = (TextView) v.findViewById(R.id.row_product_unit_type_textview);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Clicked on " + getPosition(), Toast.LENGTH_LONG).show();
+                    if (productItemClickListener != null) {
+                        productItemClickListener.onProductItemClick(getPosition());
+                    }
                 }
             });
         }
     }
 
-    public MyRecyclerViewAdapter(List<Product> list) {
+    public MyRecyclerViewAdapter(List<Product> list,OnProductItemClickListener listener) {
         this.list = list;
+
+        productItemClickListener = listener;
+
+        selectedItems = new SparseBooleanArray();
     }
 
     @Override
@@ -70,10 +85,39 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         viewHolder.mDateTextView.setText(Utilities.convertDateToString(list.get(position).getBuyDate()));
         viewHolder.mValueTextView.setText(Utilities.DOUBLE_CUT_ZERO_FMT.format(list.get(position).getSize()));
         viewHolder.mUnitTypeTextView.setText(list.get(position).getMeasureUnitString());
+        viewHolder.itemView.setActivated(selectedItems.get(position, false));
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
+    public void toggleSelection(int pos) {
+        if (selectedItems.get(pos, false)) {
+            selectedItems.delete(pos);
+        }
+        else {
+            selectedItems.put(pos, true);
+        }
+        notifyItemChanged(pos);
+    }
+
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<Integer>(selectedItems.size());
+        for (int i = 0; i < selectedItems.size(); i++) {
+            items.add(selectedItems.keyAt(i));
+        }
+        return items;
+    }
+
+    public int getSelectedItemCount() {
+        return selectedItems.size();
+    }
+
+    public void clearSelections() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
 }

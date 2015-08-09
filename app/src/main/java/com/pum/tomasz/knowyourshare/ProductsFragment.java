@@ -33,7 +33,9 @@ import java.util.List;
 /**
  * Created by Tomasz Maslon on 14.07.2015.
  */
-public class ProductsFragment extends Fragment implements View.OnClickListener,RecyclerView.OnItemTouchListener {
+public class ProductsFragment extends Fragment implements View.OnClickListener,
+        RecyclerView.OnItemTouchListener,
+        MyRecyclerViewAdapter.OnProductItemClickListener {
 
     private Activity activity = null;
 
@@ -48,6 +50,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
 
     GestureDetectorCompat gestureDetector;
     public ActionMode actionMode;
+    private int longTouchIndex =-1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,12 +101,26 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
 
     @Override
     public void onClick(View v) {
-        Log.d(Utilities.TAG,"Clicked on add button");
 
+
+        if(v.getId() == R.id.add_button){
+            Log.d(Utilities.TAG, "Clicked on add button");
 //        Intent i = new Intent(getActivity(), ProductAddActivity.class);
 //        startActivity(i);
-        getActivity().startActionMode(mCallback);
+          getActivity().startActionMode(mCallback);
+        }
+    }
 
+    @Override
+    public void onProductItemClick(int position) {
+        Log.d(Utilities.TAG,"Clicked on item: "+position+" in ProductsFragment");
+        if (actionMode != null) {
+            if(position!=longTouchIndex){
+                myToggleSelection(position);
+            }
+            longTouchIndex = -1;
+            return;
+        }
     }
 
     public void updateListConfiguration(ProductsListConfigurationEnum plc){
@@ -114,7 +131,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
             productsListConfiguration = plc;
             setCurrentData(plc);
             //create new Recycler Adapter
-            mAdapter = new MyRecyclerViewAdapter(data);
+            mAdapter = new MyRecyclerViewAdapter(data,this);
             mRecyclerView.swapAdapter(mAdapter,false);
         }
     }
@@ -148,7 +165,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // specify an adapter
-        mAdapter = new MyRecyclerViewAdapter(data);
+        mAdapter = new MyRecyclerViewAdapter(data,this);
         mRecyclerView.setAdapter(mAdapter);
 
         // onClickDetection is done in this Activity's onItemTouchListener
@@ -176,7 +193,6 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
 
     }
 
-
     private class RecyclerViewDemoOnGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -194,12 +210,16 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
             actionMode = getActivity().startActionMode(mCallback);
             int idx = mRecyclerView.getChildPosition(view);
             myToggleSelection(idx);
+            longTouchIndex = idx;
             super.onLongPress(e);
         }
     }
 
     private void myToggleSelection(int idx) {
-        
+        ((MyRecyclerViewAdapter)mAdapter).toggleSelection(idx);
+        String title = getString(R.string.selected_count, ((MyRecyclerViewAdapter)mAdapter).getSelectedItemCount());
+        actionMode.setTitle(title);
+
     }
 
 
@@ -214,6 +234,9 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
         public void onDestroyActionMode( ActionMode mode )
         {
             actionMode = null;
+            ((MyRecyclerViewAdapter)mAdapter).clearSelections();
+            //fab.setVisibility(View.VISIBLE);
+            longTouchIndex = -1;
         }
 
         @Override
@@ -221,19 +244,29 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,R
         {
             MenuInflater inflater = mode.getMenuInflater();
             inflater.inflate(R.menu.menu_cab_fragment_products, menu);
-
+            //fab.setVisibility(View.GONE);
             return true;
         }
         @Override
         public boolean onActionItemClicked( ActionMode mode, MenuItem item )
         {
-            boolean ret = false;
-            if(item.getItemId() == R.id.actionmode_cancel)
-            {
-                mode.finish();
-                ret = true;
+
+            switch (item.getItemId()) {
+                case R.id.menu_delete:
+                    List<Integer> selectedItemPositions = ((MyRecyclerViewAdapter)mAdapter).getSelectedItems();
+                    int currPos;
+                    for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+                        currPos = selectedItemPositions.get(i);
+                        //RecyclerViewDemoApp.removeItemFromList(currPos);
+                        //mAdapter.removeData(currPos);
+                        Log.d(Utilities.TAG,"Remove item "+currPos);
+                    }
+                    actionMode.finish();
+                    return true;
+                default:
+                    return false;
             }
-            return ret;
+
         }
     };
 

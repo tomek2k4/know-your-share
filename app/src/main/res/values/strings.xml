@@ -27,6 +27,7 @@
     <string name="test_action_mode_button">Test action mode</string>
 
     <string name="action_remove">Remove</string>
+    <string name="selected_count">%1$s selected</string>
 
 
     <string-array name="measurement_type_enum_stringarray">
