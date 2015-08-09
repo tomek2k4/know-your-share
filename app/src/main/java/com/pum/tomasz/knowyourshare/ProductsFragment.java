@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
+import com.pum.tomasz.knowyourshare.recyclerview.DividerItemDecoration;
 import com.pum.tomasz.knowyourshare.recyclerview.MyRecyclerViewAdapter;
 
 import java.util.LinkedList;
@@ -101,13 +102,12 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-
-
-        if(v.getId() == R.id.add_button){
-            Log.d(Utilities.TAG, "Clicked on add button");
-//        Intent i = new Intent(getActivity(), ProductAddActivity.class);
-//        startActivity(i);
-          getActivity().startActionMode(mCallback);
+        if(v!=null){
+            if(v.getId() == R.id.add_button){
+                Log.d(Utilities.TAG, "Clicked on add button");
+                Intent i = new Intent(getActivity(), ProductAddActivity.class);
+                startActivity(i);
+            }
         }
     }
 
@@ -167,6 +167,10 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
         // specify an adapter
         mAdapter = new MyRecyclerViewAdapter(data,this);
         mRecyclerView.setAdapter(mAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration =
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+        mRecyclerView.addItemDecoration(itemDecoration);
 
         // onClickDetection is done in this Activity's onItemTouchListener
         // with the help of a GestureDetector;
@@ -250,15 +254,14 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
         @Override
         public boolean onActionItemClicked( ActionMode mode, MenuItem item )
         {
-
             switch (item.getItemId()) {
                 case R.id.menu_delete:
                     List<Integer> selectedItemPositions = ((MyRecyclerViewAdapter)mAdapter).getSelectedItems();
                     int currPos;
                     for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
                         currPos = selectedItemPositions.get(i);
-                        //RecyclerViewDemoApp.removeItemFromList(currPos);
-                        //mAdapter.removeData(currPos);
+                        ((MainActivity)getActivity()).getProductDatabaseFacade().delete(data.get(currPos));
+                        ((MyRecyclerViewAdapter) mAdapter).removeData(currPos);
                         Log.d(Utilities.TAG,"Remove item "+currPos);
                     }
                     actionMode.finish();
@@ -266,7 +269,6 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                 default:
                     return false;
             }
-
         }
     };
 

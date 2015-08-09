@@ -180,10 +180,7 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 Intent i = new Intent(this, ProductAddActivity.class);
                 startActivity(i);
                 break;
-            case R.id.test_action_mode_home_button_layout:
-                Log.d(Utilities.TAG, "Clicked on testaction mode button");
 
-                break;
         }
     }
 

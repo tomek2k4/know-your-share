@@ -120,4 +120,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         notifyDataSetChanged();
     }
 
+    /**
+     * Removes the item that currently is at the passed in position from the
+     * underlying data set.
+     *
+     * @param position The index of the item to remove.
+     */
+    public void removeData(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
 }

@@ -70,7 +70,6 @@ public class ProductDatabaseFacade {
                 .delete(ProductDbOpenHelper.TABLE_PRODUCT, "_id=" + id, null));
     }
 
-
     public Product getById(long id) {
         validate();
         Cursor cur = null;
@@ -110,7 +109,7 @@ public class ProductDatabaseFacade {
             }
         }
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
 
@@ -163,7 +162,7 @@ public class ProductDatabaseFacade {
             }
         }
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
 
@@ -198,7 +197,7 @@ public class ProductDatabaseFacade {
             }
         }
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
     private Cursor getCursorForAllTodayProducts() {
@@ -243,7 +242,7 @@ public class ProductDatabaseFacade {
             }
         }
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
 
@@ -280,6 +279,5 @@ public class ProductDatabaseFacade {
                     "Illegal access to the disposed ProductDbHelper object.");
         }
     }
-
 
 }
