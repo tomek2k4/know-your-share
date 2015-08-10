@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Codzienne Zakupy</string>
+
+    <string name="action_settings">Ustawienia</string>
+
+    <string name="show_all_products_string">Wyswietl wszystkie produkty</string>
+    <string name="show_today_products_string">Wyswietl dzisiejsze produkty</string>
+    <string name="show_frequently_bought_products_string">Wyswietl najczesciej kupowane</string>
+    <string name="add_new_product_string">Dodaj nowy produkt</string>
+    <string name="new_product_hint">Nazwa Produktu</string>
+    <string name="title_activity_product_add">Dodaj nowy produkt</string>
+    <string name="add_button_text_string">Dodaj produkt</string>
+    <string name="new_msg_empty_prduct_name">Wypelnij nazwe produktu</string>
+    <string name="new_msg_format_buy_date">Wpisz date w nastepujacym formacie: YYYY-MM-DD</string>
+    <string name="new_msg_empty_value">Wpisz wartosc</string>
+    <string name="new_msg_wrong_value_format">Wpisz poprawna wartosc zmienno-przecinkowa</string>
+
+
+
+
+    <string name="action_remove">Remove</string>
+    <string name="selected_count">%1$s selected</string>
+    <string name="enter_new_product_hint_string">THERE ARE NO PRODUCTS MATCHING SELECTED CRITERIA</string>
+    <string name="value_of_product_hint_string">Product\'s value of units</string>
+    <string name="language_setting_header_string">Language</string>
+
+    <string name="measurement_system_setting_header_string">Measurement system</string>
+
+    <string name="prefered_contact_setting_header_string">Prefered contact</string>
+    <string name="invite_phone_hint">Enter phone number</string>
+    <string name="pick_contact_phone_label">Browse..</string>
+
+
+    <string-array name="measurement_type_enum_stringarray">
+        <item>Quantity</item>
+        <item>Mass</item>
+        <item>Volume</item>
+        <item>Length</item>
+    </string-array>
+
+
+    <string name="polish_string">Polish</string>
+    <string name="english_string">English</string>
+
+    <string name="metrical_string">Metric</string>
+    <string name="imperial_string">Imperial</string>
+
+
+
+
+
+
+</resources>

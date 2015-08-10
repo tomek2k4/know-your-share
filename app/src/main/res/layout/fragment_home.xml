@@ -34,7 +34,7 @@
         <include
             android:id="@+id/frequently_bought_products_button_layout"
             layout="@layout/home_button_layout"
-            android:layout_height="@dimen/home_button_height"
+            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             />
 

@@ -47,7 +47,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Clicked on " + getPosition(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(v.getContext(), "Clicked on " + getPosition(), Toast.LENGTH_LONG).show();
                     if (productItemClickListener != null) {
                         productItemClickListener.onProductItemClick(getPosition());
                     }

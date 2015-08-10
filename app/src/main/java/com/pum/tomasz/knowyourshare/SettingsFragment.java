@@ -1,16 +1,26 @@
 package com.pum.tomasz.knowyourshare;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.pum.tomasz.knowyourshare.preferences.Preferences;
+
+import java.util.Locale;
 
 /**
  * Created by tomasz on 15.07.2015.
  */
-public class SettingsFragment extends Fragment{
+public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +35,61 @@ public class SettingsFragment extends Fragment{
             // the view hierarchy; it would just never be used.
             return null;
         }
-        return (LinearLayout)inflater.inflate(R.layout.fragment_settings, container, false);
+
+        View rootView = (LinearLayout)inflater.inflate(R.layout.fragment_settings, container, false);
+
+        initializeSettingsLayoutComponents(rootView);
+
+        return rootView;
     }
 
+    private void initializeSettingsLayoutComponents(View rootView) {
+
+        int idx;
+        SharedPreferences prefs = getActivity().getApplicationContext()
+                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+
+        RadioGroup languageRadioGroup = (RadioGroup) rootView.findViewById(R.id.settings_language_radiogroup);
+        String languageString = prefs.getString(Preferences.KEY_LANGUAGE,Preferences.LanguageEnum.ENGLISH.name());
+        idx = Preferences.LanguageEnum.valueOf(languageString).getValue();
+        ((RadioButton) languageRadioGroup.getChildAt(idx)).setChecked(true);
+        languageRadioGroup.setOnCheckedChangeListener(this);
+
+        RadioGroup measureSystemRadioGroup = (RadioGroup) rootView.findViewById(R.id.settings_measurement_radiogroup);
+        String measureString = prefs.getString(Preferences.KEY_MEASUREMENT_SYSTEM, Preferences.MeasurementSystemEnum.METRICAL.name());
+        idx = Preferences.MeasurementSystemEnum.valueOf(measureString).getValue();
+        ((RadioButton) measureSystemRadioGroup.getChildAt(idx)).setChecked(true);
+        measureSystemRadioGroup.setOnCheckedChangeListener(this);
+
+        EditText phoneEditText = (EditText) rootView.findViewById(R.id.settings_contact_phone_number_edittext);
+        phoneEditText.setText(prefs.getString(Preferences.KEY_PHONE_NUMBER,""));
+
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        SharedPreferences prefs = getActivity().getApplicationContext()
+                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        int idx;
+        Locale locale;
+        Configuration config = new Configuration();
+
+        switch (group.getId()){
+            case R.id.settings_language_radiogroup:
+                idx = group.indexOfChild(getView().findViewById(checkedId));
+                locale = new Locale(Preferences.LanguageEnum.values()[idx].getCode());
+                config.locale = locale;
+                getActivity().getApplicationContext().getResources().updateConfiguration(config, null);
+                editor.putString(Preferences.KEY_LANGUAGE,Preferences.LanguageEnum.values()[idx].name());
+                break;
+            case R.id.settings_measurement_radiogroup:
+                idx = group.indexOfChild(getView().findViewById(checkedId));
+                editor.putString(Preferences.KEY_MEASUREMENT_SYSTEM,Preferences.MeasurementSystemEnum.values()[idx].name());
+                break;
+        }
+        editor.commit();
+
+    }
 }

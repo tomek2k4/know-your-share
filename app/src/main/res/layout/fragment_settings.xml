@@ -6,6 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/mainColor"
+    android:textColor="@color/tabDark"
     >
 
     <LinearLayout
@@ -31,6 +32,7 @@
                 android:text="@string/language_setting_header_string"
                 android:textSize="20sp"
                 android:gravity="center|center_vertical"
+                android:textColor="@color/tabDark"
                 />
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -39,22 +41,27 @@
                 android:orientation="horizontal"
                 >
                 <RadioGroup
+                    android:id="@+id/settings_language_radiogroup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:textColor="@color/tabDark"
+                    >
                     <RadioButton
                         android:id="@+id/settings_english_radiobutton"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/english_string"
                         android:layout_marginRight="20dp"
+                        android:textColor="@color/tabDark"
                         />
                     <RadioButton
                         android:id="@+id/settings_polish_radiobutton"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/polish_string"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/tabDark"/>
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>
@@ -72,6 +79,7 @@
                 android:text="@string/measurement_system_setting_header_string"
                 android:textSize="20sp"
                 android:gravity="center|center_vertical"
+                android:textColor="@color/tabDark"
                 />
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -80,22 +88,26 @@
                 android:orientation="horizontal"
                 >
                 <RadioGroup
+                    android:id="@+id/settings_measurement_radiogroup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:textColor="@color/tabDark">
                     <RadioButton
                         android:id="@+id/settings_metrical_radiobutton"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/metrical_string"
                         android:layout_marginRight="20dp"
+                        android:textColor="@color/tabDark"
                         />
                     <RadioButton
                         android:id="@+id/settings_imperial_radiobutton"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:text="@string/imperial_string"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/tabDark"/>
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>
@@ -113,6 +125,7 @@
                 android:text="@string/prefered_contact_setting_header_string"
                 android:textSize="20sp"
                 android:gravity="center|center_vertical"
+                android:textColor="@color/tabDark"
                 />
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -127,14 +140,17 @@
                     android:inputType="phone"
                     android:ems="10"
                     android:layout_toLeftOf="@+id/settings_contact_browse_button"
-                    android:layout_alignParentLeft="true"></EditText>
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/tabDark"
+                    />
                 <Button
                     android:id="@+id/settings_contact_browse_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pick_contact_phone_label"
                     android:layout_alignBottom="@+id/settings_contact_phone_number_edittext"
-                    android:layout_alignParentEnd="true"></Button>
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/tabDark"/>
             </RelativeLayout>
         </LinearLayout>
 

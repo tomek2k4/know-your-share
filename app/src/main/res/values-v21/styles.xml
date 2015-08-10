@@ -15,7 +15,11 @@
         <!--   color For Ripple effect -->
         <item name="android:colorControlHighlight">@android:color/holo_blue_light</item>
 
+        <item name="android:actionModeBackground">@color/fab_color_2</item>
+
+
     </style>
+
 
 
 </resources>
