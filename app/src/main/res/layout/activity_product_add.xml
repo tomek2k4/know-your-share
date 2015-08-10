@@ -47,6 +47,7 @@
         android:ems="10"
         android:textColor="@color/tabDark"
         android:textSize="16dp"
+        android:hint="@string/value_of_product_hint_string"
         />
     <LinearLayout
         android:layout_width="fill_parent"

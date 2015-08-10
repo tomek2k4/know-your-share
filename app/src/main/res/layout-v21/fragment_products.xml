@@ -6,6 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/mainColor">
 
+    <include
+        android:id="@+id/no_products_info"
+        layout="@layout/empty_list_text"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+
+
     <com.pum.tomasz.knowyourshare.floatingactionbutton.MyFloatingActionButton
         android:id="@+id/add_button"
         android:layout_width="@dimen/fab_size"

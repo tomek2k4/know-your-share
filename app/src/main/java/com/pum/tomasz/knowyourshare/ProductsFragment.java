@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.Product;
@@ -140,6 +141,18 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
             //create new Recycler Adapter
             mAdapter = new MyRecyclerViewAdapter(data,this);
             mRecyclerView.swapAdapter(mAdapter,false);
+
+            displayEmptyListPrompt(getView());
+        }
+    }
+
+    private void displayEmptyListPrompt(View rootView) {
+        LinearLayout emptyListTextView = (LinearLayout) rootView.findViewById(R.id.no_products_info);
+
+        if(data.size() != 0){
+            emptyListTextView.setVisibility(View.INVISIBLE);
+        }else {
+            emptyListTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -155,6 +168,8 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
 
         //InitializelList
         initializeRecyclerView(rootView);
+
+        displayEmptyListPrompt(rootView);
 
     }
 
@@ -226,6 +241,11 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
         return false;
     }
 
+    public void cloceActionMode() {
+        if(actionMode!=null){
+            actionMode.finish();
+        }
+    }
 
 
     private class RecyclerViewDemoOnGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -302,6 +322,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                         Log.d(Utilities.TAG,"Remove item "+currPos);
                     }
                     actionMode.finish();
+                    displayEmptyListPrompt(getView());
                     return true;
                 default:
                     return false;

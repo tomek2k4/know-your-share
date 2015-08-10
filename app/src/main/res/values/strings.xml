@@ -28,6 +28,18 @@
 
     <string name="action_remove">Remove</string>
     <string name="selected_count">%1$s selected</string>
+    <string name="enter_new_product_hint_string">THERE ARE NO PRODUCTS MATCHING SELECTED CRITERIA</string>
+    <string name="value_of_product_hint_string">Product\'s value of units</string>
+    <string name="language_setting_header_string">Language</string>
+    <string name="metrical_string">Metrical</string>
+    <string name="imperial_string">Imperial</string>
+    <string name="measurement_system_setting_header_string">Measurement system</string>
+    <string name="polish_string">Polish</string>
+    <string name="english_string">English</string>
+    <string name="prefered_contact_setting_header_string">Prefered contact</string>
+    <string name="browse_button_string">Browse..</string>
+    <string name="invite_phone_hint">Enter phone number</string>
+    <string name="pick_contact_phone_label">Browse..</string>
 
 
     <string-array name="measurement_type_enum_stringarray">

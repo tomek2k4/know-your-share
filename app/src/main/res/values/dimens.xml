@@ -4,4 +4,8 @@
     <dimen name="activity_vertical_margin">20dp</dimen>
     <dimen name="home_button_height">52dp</dimen>
     <dimen name="add_button_top_padding_size">50dp</dimen>
+    <dimen name="settings_card_header_height">40dp</dimen>
+    <dimen name="settings_card_margin_bottom_size">20dp</dimen>
+    <dimen name="contact_edittext_height">40dp</dimen>
+    <dimen name="settings_contact_component_height">40dp</dimen>
 </resources>

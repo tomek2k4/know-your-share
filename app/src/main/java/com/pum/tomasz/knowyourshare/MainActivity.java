@@ -9,12 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -135,6 +129,19 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                     hf.update(homeFragmentArgs);
                 }
             }
+
+            if(position!=TabsTagEnum.PRODUCTS.getValue()){
+                Log.d(Utilities.TAG, "Clicked on tab different then product fragment, close ActionMode if opened");
+                TabInfo tabInfo = tabManager.getTabInfoList().get(TabsTagEnum.PRODUCTS.getValue());
+
+                ProductsFragment pf = (ProductsFragment) tabInfo.getFragment();
+                if(pf != null){
+                    pf.cloceActionMode();
+                }
+            }
+
+
+
         }
     }
 
