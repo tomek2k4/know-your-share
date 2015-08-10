@@ -27,6 +27,7 @@
         android:text="button text"
         android:textStyle="bold"
         android:textSize="15dp"
+        android:singleLine="false"
         />
 
     <TextView
