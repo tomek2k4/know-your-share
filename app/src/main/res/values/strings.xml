@@ -17,32 +17,33 @@
     <string name="new_msg_empty_value">Please enter value</string>
     <string name="new_msg_wrong_value_format">Please enter correct double value</string>
 
+    <string name="action_remove">Remove</string>
+    <string name="selected_count">%1$s selected</string>
+    <string name="enter_new_product_hint_string">THERE ARE NO PRODUCTS MATCHING SELECTED CRITERIA</string>
+    <string name="value_of_product_hint_string">Product\'s value of units</string>
+    <string name="language_setting_header_string">Language</string>
 
-    <string name="action_remove">Usun</string>
-    <string name="selected_count">Wybrano %1$s</string>
-    <string name="enter_new_product_hint_string">NIE MA PRODUKTOW SPELNIAJACE WYBRANE KRYTERIA</string>
-    <string name="value_of_product_hint_string">Wartosc produktu w jednostkach</string>
-    <string name="language_setting_header_string">Jezyk</string>
+    <string name="measurement_system_setting_header_string">Measurement system</string>
 
-    <string name="measurement_system_setting_header_string">System metryczny</string>
-
-    <string name="prefered_contact_setting_header_string">Preferowany kontakt</string>
-    <string name="invite_phone_hint">Wpisz numer telefonu</string>
-    <string name="pick_contact_phone_label">Wybierz..</string>
+    <string name="prefered_contact_setting_header_string">Prefered contact</string>
+    <string name="invite_phone_hint">Enter phone number</string>
+    <string name="pick_contact_phone_label">Browse..</string>
 
 
     <string-array name="measurement_type_enum_stringarray">
-        <item>Ilosc</item>
-        <item>Masa</item>
-        <item>Pojemnosc</item>
-        <item>Dlugosc</item>
+        <item>Quantity</item>
+        <item>Mass</item>
+        <item>Volume</item>
+        <item>Length</item>
     </string-array>
 
 
-    <string name="polish_string">polski</string>
-    <string name="english_string">angielski</string>
+    <string name="polish_string">Polish</string>
+    <string name="english_string">English</string>
 
-    <string name="metrical_string">Metryczny</string>
-    <string name="imperial_string">Imperialny</string>
+    <string name="metrical_string">Metric</string>
+    <string name="imperial_string">Imperial</string>
+
+
 
 </resources>
