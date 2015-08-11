@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/tabDark"
+        android:background="@drawable/rectangle_button_background"
         android:text="@string/add_button_text_string"
         android:gravity="center"
         android:textColor="@color/mainColor"

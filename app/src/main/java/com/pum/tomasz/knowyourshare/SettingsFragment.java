@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
@@ -36,7 +38,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
             return null;
         }
 
-        View rootView = (LinearLayout)inflater.inflate(R.layout.fragment_settings, container, false);
+        View rootView = (ScrollView)inflater.inflate(R.layout.fragment_settings, container, false);
 
         initializeSettingsLayoutComponents(rootView);
 
@@ -83,13 +85,13 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
                 config.locale = locale;
                 getActivity().getApplicationContext().getResources().updateConfiguration(config, null);
                 editor.putString(Preferences.KEY_LANGUAGE,Preferences.LanguageEnum.values()[idx].name());
+                ((MainActivity)getActivity()).reattachAllFragments();
                 break;
             case R.id.settings_measurement_radiogroup:
                 idx = group.indexOfChild(getView().findViewById(checkedId));
-                editor.putString(Preferences.KEY_MEASUREMENT_SYSTEM,Preferences.MeasurementSystemEnum.values()[idx].name());
+                editor.putString(Preferences.KEY_MEASUREMENT_SYSTEM, Preferences.MeasurementSystemEnum.values()[idx].name());
                 break;
         }
         editor.commit();
-
     }
 }

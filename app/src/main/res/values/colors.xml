@@ -16,4 +16,7 @@
     <color name="fab_color_2">#9c27b0</color>
     <color name="fab_color_2_muted">#a56ab0</color>
 
+    <color name="settings_header_background_color">#201fa8de</color>
+
+
 </resources>

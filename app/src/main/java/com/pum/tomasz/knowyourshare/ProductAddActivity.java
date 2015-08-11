@@ -1,7 +1,10 @@
 package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +20,11 @@ import com.pum.tomasz.knowyourshare.data.MeasureUnitTypeEnum;
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
 import com.pum.tomasz.knowyourshare.data.ProductDbOpenHelper;
+import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class ProductAddActivity extends Activity implements View.OnClickListener {
 
@@ -28,6 +33,7 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setLocaleFromPreferences();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_add);
 
@@ -132,5 +138,16 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
 
     }
 
+
+    private void setLocaleFromPreferences() {
+        Locale locale;
+        Configuration config = new Configuration();
+        SharedPreferences prefs = getApplicationContext()
+                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+        String languageString = prefs.getString(Preferences.KEY_LANGUAGE, Preferences.LanguageEnum.ENGLISH.name());
+        locale = new Locale(Preferences.LanguageEnum.valueOf(languageString).getCode());
+        config.locale = locale;
+        getApplicationContext().getResources().updateConfiguration(config, null);
+    }
 
 }

@@ -1,14 +1,20 @@
 package com.pum.tomasz.knowyourshare;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -16,6 +22,7 @@ import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
 import com.pum.tomasz.knowyourshare.data.ProductDbOpenHelper;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
+import com.pum.tomasz.knowyourshare.preferences.Preferences;
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.tabs.TabsTagEnum;
@@ -23,6 +30,7 @@ import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener,
@@ -59,6 +67,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     private void reinitilizeFragments(Bundle savedInstanceState) {
 
+        setLocaleFromPreferences();
+
         Bundle fragmentsInitialArgs = new Bundle();
 
         fillBundleForHomeFragment(fragmentsInitialArgs);
@@ -78,6 +88,17 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         if (savedInstanceState != null) {
             tabManager.setCurrentTabById(savedInstanceState.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
         }
+    }
+
+    private void setLocaleFromPreferences() {
+        Locale locale;
+        Configuration config = new Configuration();
+        SharedPreferences prefs = getApplicationContext()
+                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+        String languageString = prefs.getString(Preferences.KEY_LANGUAGE, Preferences.LanguageEnum.ENGLISH.name());
+        locale = new Locale(Preferences.LanguageEnum.valueOf(languageString).getCode());
+        config.locale = locale;
+        getApplicationContext().getResources().updateConfiguration(config, null);
     }
 
     private void fillBundleForHomeFragment(Bundle fragmentsInitialArgs) {
@@ -278,4 +299,15 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
     }
 
 
+    public void reattachAllFragments() {
+        for(TabInfo tabInfo:tabManager.getTabInfoList()){
+            Fragment currentFragment = tabInfo.getFragment();
+            if(currentFragment != null){
+                FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+                fragTransaction.detach(currentFragment);
+                fragTransaction.attach(currentFragment);
+                fragTransaction.commit();
+            }
+        }
+    }
 }

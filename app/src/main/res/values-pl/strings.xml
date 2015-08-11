@@ -5,24 +5,24 @@
 
     <string name="action_settings">Ustawienia</string>
 
-    <string name="show_all_products_string">Wyswietl wszystkie produkty</string>
-    <string name="show_today_products_string">Wyswietl dzisiejsze produkty</string>
-    <string name="show_frequently_bought_products_string">Wyswietl najczesciej kupowane</string>
+    <string name="show_all_products_string">Wyświetl wszystkie produkty</string>
+    <string name="show_today_products_string">Wyświetl dzisiejsze produkty</string>
+    <string name="show_frequently_bought_products_string">Wyświetl najczęściej kupowane</string>
     <string name="add_new_product_string">Dodaj nowy produkt</string>
     <string name="new_product_hint">Nazwa Produktu</string>
     <string name="title_activity_product_add">Dodaj nowy produkt</string>
     <string name="add_button_text_string">Dodaj produkt</string>
-    <string name="new_msg_empty_prduct_name">Wypelnij nazwe produktu</string>
-    <string name="new_msg_format_buy_date">Wpisz date w nastepujacym formacie: YYYY-MM-DD</string>
-    <string name="new_msg_empty_value">Wpisz wartosc</string>
-    <string name="new_msg_wrong_value_format">Wpisz poprawna wartosc zmienno-przecinkowa</string>
+    <string name="new_msg_empty_prduct_name">Wypełnij nazwę produktu</string>
+    <string name="new_msg_format_buy_date">Wpisz date w następującym formacie: YYYY-MM-DD</string>
+    <string name="new_msg_empty_value">Wpisz wartość</string>
+    <string name="new_msg_wrong_value_format">Wpisz poprawną wartość zmienno-przecinkową</string>
 
 
-    <string name="action_remove">Usun</string>
+    <string name="action_remove">Usuń</string>
     <string name="selected_count">Wybrano %1$s</string>
-    <string name="enter_new_product_hint_string">NIE MA PRODUKTOW SPELNIAJACE WYBRANE KRYTERIA</string>
-    <string name="value_of_product_hint_string">Wartosc produktu w jednostkach</string>
-    <string name="language_setting_header_string">Jezyk</string>
+    <string name="enter_new_product_hint_string">NIE MA PRODUKTÓW SPEŁNIAJĄCYCH WYBRANE KRYTERIA</string>
+    <string name="value_of_product_hint_string">Wartość produktu w jednostkach</string>
+    <string name="language_setting_header_string">Język</string>
 
     <string name="measurement_system_setting_header_string">System metryczny</string>
 
@@ -32,10 +32,10 @@
 
 
     <string-array name="measurement_type_enum_stringarray">
-        <item>Ilosc</item>
+        <item>Ilość</item>
         <item>Masa</item>
-        <item>Pojemnosc</item>
-        <item>Dlugosc</item>
+        <item>Pojemność</item>
+        <item>Dlugość</item>
     </string-array>
 
 

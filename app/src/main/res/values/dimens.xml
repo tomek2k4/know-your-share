@@ -8,4 +8,5 @@
     <dimen name="settings_card_margin_bottom_size">20dp</dimen>
     <dimen name="contact_edittext_height">40dp</dimen>
     <dimen name="settings_contact_component_height">40dp</dimen>
+    <dimen name="dummy_layout_height_size">50dp</dimen>
 </resources>
