@@ -83,7 +83,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         // - replace the contents of the view with that element
         viewHolder.mProductNameTextView.setText(list.get(position).getName());
         viewHolder.mDateTextView.setText(Utilities.convertDateToString(list.get(position).getBuyDate()));
-        viewHolder.mValueTextView.setText(Utilities.DOUBLE_CUT_ZERO_FMT.format(list.get(position).getSize()));
+        viewHolder.mValueTextView.setText(Utilities.DOUBLE_CUT_ZERO_FMT.format(list.get(position).getAdjustedSize()));
         viewHolder.mUnitTypeTextView.setText(list.get(position).getMeasureUnitString());
         viewHolder.itemView.setActivated(selectedItems.get(position, false));
     }

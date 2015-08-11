@@ -65,26 +65,7 @@ public class Product {
     }
 
     public double getSize() {
-        if(MeasureUnit.isImperialMeasureSystem()){
-            double trasformSize = size;
-            switch (unit.getMeasureUnitTypeEnum()){
-                case MASS:
-                    trasformSize = MeasureUnit.KG_TO_POUNDS_MULTIPLIER * size;
-                    break;
-                case VOLUME:
-                    trasformSize = MeasureUnit.LITER_TO_PINT_MULTIPLIER * size;
-                    break;
-                case LENGTH:
-                    trasformSize = MeasureUnit.METER_TO_FOOT_MULTIPLIER * size;
-                    break;
-                case QUANTITY:
-                    trasformSize = size;
-                    break;
-            }
-            return trasformSize;
-        }else{
-            return size;
-        }
+        return size;
     }
 
     public void setSize(double size) {
@@ -117,6 +98,52 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setAdjustedSize(double size){
+        if(MeasureUnit.isImperialMeasureSystem()){
+            double trasformSize = size;
+            switch (unit.getMeasureUnitTypeEnum()){
+                case MASS:
+                    trasformSize = size/MeasureUnit.KG_TO_POUNDS_MULTIPLIER ;
+                    break;
+                case VOLUME:
+                    trasformSize = size/MeasureUnit.LITER_TO_PINT_MULTIPLIER;
+                    break;
+                case LENGTH:
+                    trasformSize = size/MeasureUnit.METER_TO_FOOT_MULTIPLIER;
+                    break;
+                case QUANTITY:
+                    trasformSize = size;
+                    break;
+            }
+            this.size = trasformSize;
+        }else{
+            this.size = size;
+        }
+    }
+
+    public double getAdjustedSize(){
+        if(MeasureUnit.isImperialMeasureSystem()){
+            double trasformSize = size;
+            switch (unit.getMeasureUnitTypeEnum()){
+                case MASS:
+                    trasformSize = MeasureUnit.KG_TO_POUNDS_MULTIPLIER * size;
+                    break;
+                case VOLUME:
+                    trasformSize = MeasureUnit.LITER_TO_PINT_MULTIPLIER * size;
+                    break;
+                case LENGTH:
+                    trasformSize = MeasureUnit.METER_TO_FOOT_MULTIPLIER * size;
+                    break;
+                case QUANTITY:
+                    trasformSize = size;
+                    break;
+            }
+            return trasformSize;
+        }else{
+            return size;
+        }
     }
 
 

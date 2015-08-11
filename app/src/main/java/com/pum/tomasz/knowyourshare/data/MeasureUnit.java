@@ -1,5 +1,7 @@
 package com.pum.tomasz.knowyourshare.data;
 
+import com.pum.tomasz.knowyourshare.preferences.Preferences;
+
 /**
  * Created by tomasz on 23.07.2015.
  */
@@ -52,4 +54,5 @@ public class MeasureUnit {
     public static boolean isImperialMeasureSystem() {
         return imperial;
     }
+
 }

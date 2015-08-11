@@ -120,7 +120,7 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
         }
         try {
             Double value = new Double(buffer);
-            p.setSize(value);
+            p.setAdjustedSize(value);
         }catch (NumberFormatException e){
             Log.d(Utilities.TAG,"Wrong value formatting");
             Toast.makeText(this, R.string.new_msg_wrong_value_format,
