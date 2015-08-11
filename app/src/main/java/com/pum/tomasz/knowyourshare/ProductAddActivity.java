@@ -1,10 +1,6 @@
 package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pum.tomasz.knowyourshare.data.MeasureUnit;
@@ -24,7 +19,6 @@ import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Locale;
 
 public class ProductAddActivity extends Activity implements View.OnClickListener {
 
@@ -33,8 +27,10 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setLocaleFromPreferences();
+        Preferences.initializeLocaleFromPreferences(this);
+        Preferences.initializeMeasurementSystemFromPreferences(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_product_add);
 
         EditText buyDateTextView = (EditText) findViewById(R.id.new_buy_date_edittext);
@@ -46,7 +42,6 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
         initializeSpinner();
 
         setupDatabaseConnection();
-
     }
 
     private void initializeSpinner() {
@@ -138,16 +133,5 @@ public class ProductAddActivity extends Activity implements View.OnClickListener
 
     }
 
-
-    private void setLocaleFromPreferences() {
-        Locale locale;
-        Configuration config = new Configuration();
-        SharedPreferences prefs = getApplicationContext()
-                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
-        String languageString = prefs.getString(Preferences.KEY_LANGUAGE, Preferences.LanguageEnum.ENGLISH.name());
-        locale = new Locale(Preferences.LanguageEnum.valueOf(languageString).getCode());
-        config.locale = locale;
-        getApplicationContext().getResources().updateConfiguration(config, null);
-    }
 
 }

@@ -1,10 +1,7 @@
 package com.pum.tomasz.knowyourshare;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -30,7 +26,6 @@ import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
 import java.util.EmptyStackException;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener,
@@ -67,7 +62,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
 
     private void reinitilizeFragments(Bundle savedInstanceState) {
 
-        setLocaleFromPreferences();
+        Preferences.initializeLocaleFromPreferences(this);
+        Preferences.initializeMeasurementSystemFromPreferences(this);
 
         Bundle fragmentsInitialArgs = new Bundle();
 
@@ -88,17 +84,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         if (savedInstanceState != null) {
             tabManager.setCurrentTabById(savedInstanceState.getInt(BundleKeyEnum.LAST_KNOWN_TAB.name())); //set the tab as per the saved state
         }
-    }
-
-    private void setLocaleFromPreferences() {
-        Locale locale;
-        Configuration config = new Configuration();
-        SharedPreferences prefs = getApplicationContext()
-                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
-        String languageString = prefs.getString(Preferences.KEY_LANGUAGE, Preferences.LanguageEnum.ENGLISH.name());
-        locale = new Locale(Preferences.LanguageEnum.valueOf(languageString).getCode());
-        config.locale = locale;
-        getApplicationContext().getResources().updateConfiguration(config, null);
     }
 
     private void fillBundleForHomeFragment(Bundle fragmentsInitialArgs) {

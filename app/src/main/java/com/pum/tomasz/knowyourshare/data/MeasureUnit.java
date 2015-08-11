@@ -4,16 +4,17 @@ package com.pum.tomasz.knowyourshare.data;
  * Created by tomasz on 23.07.2015.
  */
 public class MeasureUnit {
-    private boolean imperial = false;
+
+    public static final double KG_TO_POUNDS_MULTIPLIER = 2.20462;
+    public static final double LITER_TO_PINT_MULTIPLIER = 1.75975;
+    public static final double METER_TO_FOOT_MULTIPLIER = 3.28084;
+
+    private static boolean imperial = false;
     private MeasureUnitTypeEnum measureUnitTypeEnum;
 
-    public MeasureUnit(boolean imperial, MeasureUnitTypeEnum measureUnitTypeEnum) {
+    public MeasureUnit(MeasureUnitTypeEnum measureUnitTypeEnum) {
         this.imperial = imperial;
         this.measureUnitTypeEnum = measureUnitTypeEnum;
-    }
-
-    public  MeasureUnit(MeasureUnitTypeEnum measureUnit){
-        this(false,measureUnit);
     }
 
     public String getUnitsName(){
@@ -22,7 +23,7 @@ public class MeasureUnit {
                 if(imperial) return "pounds";
                 else return "kg";
             case VOLUME:
-                if(imperial) return "ounce";
+                if(imperial) return "pint";
                 else return "l";
             case LENGTH:
                 if(imperial) return "foot";
@@ -36,21 +37,19 @@ public class MeasureUnit {
         else return "l";
     }
 
-    public String getMassUnitsName(){
-        if(imperial) return "pounds";
-        else return "kg";
-    }
-
-    public String getLengthUnitsName(){
-        if(imperial) return "foot";
-        else return "m";
-    }
-
     public MeasureUnitTypeEnum getMeasureUnitTypeEnum() {
         return measureUnitTypeEnum;
     }
 
     public void setMeasureUnitTypeEnum(MeasureUnitTypeEnum measureUnitTypeEnum) {
         this.measureUnitTypeEnum = measureUnitTypeEnum;
+    }
+
+    public static void setImperialMeasureSystem(boolean imp){
+        imperial = imp;
+    }
+
+    public static boolean isImperialMeasureSystem() {
+        return imperial;
     }
 }

@@ -19,7 +19,6 @@ public class ShareProvider {
 
     public void sendSms(){
 
-
     }
 
     public static void setContext(Context context){

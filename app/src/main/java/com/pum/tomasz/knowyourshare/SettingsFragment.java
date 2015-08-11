@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
+import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
 import java.util.Locale;
@@ -85,13 +86,18 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
                 config.locale = locale;
                 getActivity().getApplicationContext().getResources().updateConfiguration(config, null);
                 editor.putString(Preferences.KEY_LANGUAGE,Preferences.LanguageEnum.values()[idx].name());
-                ((MainActivity)getActivity()).reattachAllFragments();
                 break;
             case R.id.settings_measurement_radiogroup:
                 idx = group.indexOfChild(getView().findViewById(checkedId));
+                if(idx == Preferences.MeasurementSystemEnum.IMPERIAL.getValue()){
+                    MeasureUnit.setImperialMeasureSystem(true);
+                }else{
+                    MeasureUnit.setImperialMeasureSystem(false);
+                }
                 editor.putString(Preferences.KEY_MEASUREMENT_SYSTEM, Preferences.MeasurementSystemEnum.values()[idx].name());
                 break;
         }
         editor.commit();
+        ((MainActivity)getActivity()).reattachAllFragments();
     }
 }

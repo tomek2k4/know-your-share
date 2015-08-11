@@ -65,7 +65,26 @@ public class Product {
     }
 
     public double getSize() {
-        return size;
+        if(MeasureUnit.isImperialMeasureSystem()){
+            double trasformSize = size;
+            switch (unit.getMeasureUnitTypeEnum()){
+                case MASS:
+                    trasformSize = MeasureUnit.KG_TO_POUNDS_MULTIPLIER * size;
+                    break;
+                case VOLUME:
+                    trasformSize = MeasureUnit.LITER_TO_PINT_MULTIPLIER * size;
+                    break;
+                case LENGTH:
+                    trasformSize = MeasureUnit.METER_TO_FOOT_MULTIPLIER * size;
+                    break;
+                case QUANTITY:
+                    trasformSize = size;
+                    break;
+            }
+            return trasformSize;
+        }else{
+            return size;
+        }
     }
 
     public void setSize(double size) {
