@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <bitmap android:src="@drawable/ic_menu_share" android:tint="@color/fab_color_2" />
+    </item>
+</layer-list>
+
+
+
+
+

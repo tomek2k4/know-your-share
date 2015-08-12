@@ -26,8 +26,8 @@ public class ShareProvider {
     }
 
 
-    public void sendMessage(List<Product> selectedProducts) {
-        String message = composeMessage(selectedProducts);
+    public void sendMessage(List<Product> products) {
+        String message = composeMessage(products);
 
         SharedPreferences prefs = context.getApplicationContext()
                 .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
@@ -44,10 +44,10 @@ public class ShareProvider {
 
     }
 
-    private String composeMessage(List<Product> selectedProducts) {
+    private String composeMessage(List<Product> products) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(context.getResources().getString(R.string.text_message_begining).toString());
-        for (Product p:selectedProducts){
+        for (Product p:products){
             stringBuilder.append(p.getName()).append(" ");
             stringBuilder.append(Utilities.DOUBLE_CUT_ZERO_FMT.format(p.getAdjustedSize()));
             if(!p.getMeasureUnitTypeString().equals(MeasureUnitTypeEnum.QUANTITY.name())){

@@ -82,6 +82,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         initializeLayoutButton(rootView.findViewById(R.id.add_product_home_button_layout),
                 getResources().getDrawable(R.drawable.add_product_home),getString(R.string.add_new_product_string) ,-1);
 
+        initializeLayoutButton(rootView.findViewById(R.id.share_today_products_home_button_layout),
+                getResources().getDrawable(R.drawable.share_today_sign),getString(R.string.share_today_product_string) ,-1);
+
     }
 
 

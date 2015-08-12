@@ -9,11 +9,8 @@
                 android:width="@dimen/home_button_picture_size"/>
         </shape>
     </item>
-    <item android:top="10dp" android:bottom="10dp"
-        android:right="10dp" android:left="10dp">
-        <bitmap android:src="@android:drawable/ic_input_add" android:tint="@android:color/white" />
+    <item android:top="20dp" android:bottom="20dp"
+        android:right="20dp" android:left="20dp">
+        <bitmap android:src="@drawable/ic_add" android:tint="@android:color/white" />
     </item>
 </layer-list>
-
-
-

@@ -44,6 +44,7 @@
     <string name="metrical_string">Metric</string>
     <string name="imperial_string">Imperial</string>
     <string name="text_message_begining">I bought:</string>
+    <string name="share_today_product_string">Share today\'s products</string>
 
 
 </resources>

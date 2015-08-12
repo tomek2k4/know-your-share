@@ -19,6 +19,8 @@ import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
 import com.pum.tomasz.knowyourshare.data.ProductDbOpenHelper;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
+import com.pum.tomasz.knowyourshare.share.ShareProvider;
+import com.pum.tomasz.knowyourshare.share.ShareTypeEnum;
 import com.pum.tomasz.knowyourshare.tabs.TabInfo;
 import com.pum.tomasz.knowyourshare.tabs.TabManager;
 import com.pum.tomasz.knowyourshare.tabs.TabsTagEnum;
@@ -192,6 +194,12 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 Log.d(Utilities.TAG, "Clicked on add new product button");
                 Intent i = new Intent(this, ProductAddActivity.class);
                 startActivity(i);
+                break;
+            case R.id.share_today_products_home_button_layout:
+                Log.d(Utilities.TAG, "Clicked on share today's products");
+                ShareProvider shareProvider = new ShareProvider(this);
+                shareProvider.setShareType(ShareTypeEnum.SMS);
+                shareProvider.sendMessage(dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS));
                 break;
 
         }
