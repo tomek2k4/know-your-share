@@ -43,7 +43,7 @@
 
     <string name="metrical_string">Metric</string>
     <string name="imperial_string">Imperial</string>
-
+    <string name="text_message_begining">I bought:</string>
 
 
 </resources>

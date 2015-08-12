@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +68,28 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
 
         EditText phoneEditText = (EditText) rootView.findViewById(R.id.settings_contact_phone_number_edittext);
         phoneEditText.setText(prefs.getString(Preferences.KEY_PHONE_NUMBER,""));
+        phoneEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences prefs = getActivity().getApplicationContext()
+                        .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+
+                EditText phoneEditText = (EditText)getView().findViewById(R.id.settings_contact_phone_number_edittext);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(Preferences.KEY_PHONE_NUMBER,phoneEditText.getText().toString());
+                editor.commit();
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+        });
 
     }
 

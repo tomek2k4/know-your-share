@@ -13,6 +13,7 @@ import com.pum.tomasz.knowyourshare.Utilities;
 import com.pum.tomasz.knowyourshare.data.Product;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -109,6 +110,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             items.add(selectedItems.keyAt(i));
         }
         return items;
+    }
+
+    public List<Product> getSelectedProducts(){
+        List<Product> selectedProductsList = new LinkedList<Product>();
+
+        for(Integer index : getSelectedItems()){
+            selectedProductsList.add(list.get(index));
+        }
+
+        return selectedProductsList;
     }
 
     public int getSelectedItemCount() {

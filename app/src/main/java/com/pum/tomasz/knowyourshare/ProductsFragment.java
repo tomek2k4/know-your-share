@@ -29,6 +29,8 @@ import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
 import com.pum.tomasz.knowyourshare.floatingactionbutton.MyFloatingActionButton;
 import com.pum.tomasz.knowyourshare.recyclerview.DividerItemDecoration;
 import com.pum.tomasz.knowyourshare.recyclerview.MyRecyclerViewAdapter;
+import com.pum.tomasz.knowyourshare.share.ShareProvider;
+import com.pum.tomasz.knowyourshare.share.ShareTypeEnum;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -74,9 +76,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
         initializeProductsLayoutComponents(rootView);
 
         return rootView;
-
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +114,10 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                     startActivity(i);
                 }else {
                     Log.d(Utilities.TAG, "Clicked on share button");
+                    ShareProvider shareProvider = new ShareProvider(getActivity());
+                    shareProvider.setShareType(ShareTypeEnum.SMS);
+                    shareProvider.sendMessage(((MyRecyclerViewAdapter)mAdapter).getSelectedProducts());
+                    actionMode.finish();
                 }
             }
         }
