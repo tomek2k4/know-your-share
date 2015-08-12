@@ -1,6 +1,8 @@
 package com.pum.tomasz.knowyourshare;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
@@ -8,9 +10,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -19,6 +23,7 @@ import android.widget.ScrollView;
 
 import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
+import com.pum.tomasz.knowyourshare.share.ShareProvider;
 
 import java.util.Locale;
 
@@ -48,7 +53,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         return rootView;
     }
 
-    private void initializeSettingsLayoutComponents(View rootView) {
+    private void initializeSettingsLayoutComponents(final View rootView) {
 
         int idx;
         SharedPreferences prefs = getActivity().getApplicationContext()
@@ -67,18 +72,19 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         measureSystemRadioGroup.setOnCheckedChangeListener(this);
 
         EditText phoneEditText = (EditText) rootView.findViewById(R.id.settings_contact_phone_number_edittext);
-        phoneEditText.setText(prefs.getString(Preferences.KEY_PHONE_NUMBER,""));
+        phoneEditText.setText(prefs.getString(Preferences.KEY_PHONE_NUMBER, ""));
         phoneEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 SharedPreferences prefs = getActivity().getApplicationContext()
                         .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
 
-                EditText phoneEditText = (EditText)getView().findViewById(R.id.settings_contact_phone_number_edittext);
+                EditText phoneEditText = (EditText) getView().findViewById(R.id.settings_contact_phone_number_edittext);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(Preferences.KEY_PHONE_NUMBER,phoneEditText.getText().toString());
+                editor.putString(Preferences.KEY_PHONE_NUMBER, phoneEditText.getText().toString());
                 editor.commit();
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -88,10 +94,18 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
         });
 
+        Button chooseContactButton = (Button) rootView.findViewById(R.id.settings_contact_browse_button);
+        chooseContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareProvider shareProvider = new ShareProvider(getActivity());
+                shareProvider.launchContactPicker();
+            }
+        });
     }
+
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

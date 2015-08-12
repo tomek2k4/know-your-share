@@ -1,10 +1,16 @@
 package com.pum.tomasz.knowyourshare;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -12,7 +18,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
-
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductDatabaseFacade;
@@ -27,7 +32,11 @@ import com.pum.tomasz.knowyourshare.tabs.TabsTagEnum;
 import com.pum.tomasz.knowyourshare.viewpager.MyPagerAdapter;
 
 import java.util.EmptyStackException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import static android.provider.ContactsContract.CommonDataKinds.*;
 
 
 public class MainActivity extends FragmentActivity implements TabManager.TabChangeListener,
@@ -147,9 +156,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                     pf.cloceActionMode();
                 }
             }
-
-
-
         }
     }
 
@@ -201,7 +207,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 shareProvider.setShareType(ShareTypeEnum.SMS);
                 shareProvider.sendMessage(dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS));
                 break;
-
         }
     }
 
@@ -301,6 +306,62 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 fragTransaction.attach(currentFragment);
                 fragTransaction.commit();
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ShareProvider.CONTACT_PICKER_RESULT:
+                    Log.d(Utilities.TAG,"Handled result correctly");
+                    Cursor cursor = null;
+                    String phone = "";
+                    try{
+                        Uri result = data.getData();
+                        Log.v(Utilities.TAG, "Got a contact result: "
+                                + result.toString());
+
+                        // get the contact id from the Uri
+                        String id = result.getLastPathSegment();
+
+                        // query for everything phone
+                        cursor = getContentResolver().query(Phone.CONTENT_URI,
+                                null, Phone.CONTACT_ID + "=?", new String[] { id },
+                                null);
+
+                        int phoneIdx = cursor.getColumnIndex(Phone.DATA);
+
+                        // let's just get the first phone
+                        if (cursor.moveToFirst()) {
+                            phone = cursor.getString(phoneIdx);
+                            Log.v(Utilities.TAG, "Got phone: " + phone);
+                        } else {
+                            Log.w(Utilities.TAG, "No results");
+                        }
+                    }catch (Exception e){
+                        Log.e(Utilities.TAG, "Failed to get phone data",e);
+                    }finally {
+                        if (cursor != null) {
+                            cursor.close();
+                        }
+                        if (phone.length() == 0) {
+                            Toast.makeText(this, "No phone found for contact.",
+                                    Toast.LENGTH_LONG).show();
+                        }else{
+                            SharedPreferences prefs = getApplicationContext()
+                                    .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString(Preferences.KEY_PHONE_NUMBER, phone);
+                            editor.commit();
+                        }
+                    }
+                    break;
+            }
+
+        } else {
+            // gracefully handle failure
+            Log.w(Utilities.TAG, "Warning: activity result not ok");
         }
     }
 }

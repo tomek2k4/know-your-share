@@ -1,9 +1,13 @@
 package com.pum.tomasz.knowyourshare.share;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.pum.tomasz.knowyourshare.R;
 import com.pum.tomasz.knowyourshare.Utilities;
@@ -17,6 +21,8 @@ import java.util.List;
  * Created by tmaslon on 2015-08-10.
  */
 public class ShareProvider {
+
+    public static final int CONTACT_PICKER_RESULT = 1001;
 
     Context context;
     private ShareTypeEnum shareType;
@@ -62,5 +68,11 @@ public class ShareProvider {
 
     public void setShareType(ShareTypeEnum shareType) {
         this.shareType = shareType;
+    }
+
+    public void launchContactPicker() {
+        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK,
+                ContactsContract.Contacts.CONTENT_URI);
+        ((Activity)context).startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
     }
 }
