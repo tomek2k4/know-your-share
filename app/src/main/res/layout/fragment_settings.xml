@@ -151,7 +151,9 @@
                     android:text="@string/pick_contact_phone_label"
                     android:layout_alignBottom="@+id/settings_contact_phone_number_edittext"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/tabDark"/>
+                    android:gravity="center"
+                    android:textColor="@color/mainColor"
+                    android:background="@drawable/rectangle_button_background"/>
             </RelativeLayout>
         </LinearLayout>
 
