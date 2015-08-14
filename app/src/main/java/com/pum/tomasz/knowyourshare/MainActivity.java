@@ -203,9 +203,15 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 break;
             case R.id.share_today_products_home_button_layout:
                 Log.d(Utilities.TAG, "Clicked on share today's products");
-                ShareProvider shareProvider = new ShareProvider(this);
-                shareProvider.setShareType(ShareTypeEnum.SMS);
-                shareProvider.sendMessage(dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS));
+
+                List<Product> todayList = dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS);
+                if(todayList.size()!=0){
+                    ShareProvider shareProvider = new ShareProvider(this);
+                    shareProvider.setShareType(ShareTypeEnum.SMS);
+                    shareProvider.sendMessage(todayList);
+                }else{
+                    Toast.makeText(this,getResources().getString(R.string.no_items_selected_toast_string), Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

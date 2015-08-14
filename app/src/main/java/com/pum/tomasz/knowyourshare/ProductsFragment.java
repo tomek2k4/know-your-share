@@ -121,7 +121,7 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                         shareProvider.setShareType(ShareTypeEnum.SMS);
                         shareProvider.sendMessage(((MyRecyclerViewAdapter)mAdapter).getSelectedProducts());
                     }else{
-                        Toast.makeText(getActivity(), "No items is selected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),getResources().getString(R.string.no_items_selected_toast_string), Toast.LENGTH_SHORT).show();
                     }
                     actionMode.finish();
                 }
