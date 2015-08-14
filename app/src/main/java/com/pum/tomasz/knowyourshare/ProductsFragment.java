@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.data.ProductsListConfigurationEnum;
@@ -114,9 +115,14 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                     startActivity(i);
                 }else {
                     Log.d(Utilities.TAG, "Clicked on share button");
-                    ShareProvider shareProvider = new ShareProvider(getActivity());
-                    shareProvider.setShareType(ShareTypeEnum.SMS);
-                    shareProvider.sendMessage(((MyRecyclerViewAdapter)mAdapter).getSelectedProducts());
+                    //Check if we have a selected items
+                    if(((MyRecyclerViewAdapter)mAdapter).getSelectedItemCount() != 0){
+                        ShareProvider shareProvider = new ShareProvider(getActivity());
+                        shareProvider.setShareType(ShareTypeEnum.SMS);
+                        shareProvider.sendMessage(((MyRecyclerViewAdapter)mAdapter).getSelectedProducts());
+                    }else{
+                        Toast.makeText(getActivity(), "No items is selected", Toast.LENGTH_SHORT).show();
+                    }
                     actionMode.finish();
                 }
             }
