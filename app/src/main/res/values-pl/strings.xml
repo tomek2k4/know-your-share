@@ -32,7 +32,7 @@
 
 
     <string-array name="measurement_type_enum_stringarray">
-        <item>Ilość</item>
+        <item>Liczba</item>
         <item>Masa</item>
         <item>Pojemność</item>
         <item>Dlugość</item>
@@ -41,6 +41,8 @@
 
     <string name="polish_string">polski</string>
     <string name="english_string">angielski</string>
+
+    <string name="share_today_product_string">Wyślij listę z dzisiaj</string>
 
     <string name="metrical_string">Metryczny</string>
     <string name="imperial_string">Imperialny</string>
