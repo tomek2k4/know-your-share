@@ -1,11 +1,15 @@
 package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,13 +17,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -29,6 +37,8 @@ import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 import com.pum.tomasz.knowyourshare.share.ShareProvider;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -171,6 +181,57 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
 
     @Override
     public void onClick(View view) {
+        Log.d(Utilities.TAG,"Clicked on share app chooser button");
+        showShareAppChooser();
+    }
 
+    private void showShareAppChooser() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        WindowManager.LayoutParams WMLP = dialog.getWindow().getAttributes();
+        WMLP.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(WMLP);
+        dialog.getWindow().setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.dialog_app_share_chooser);
+        dialog.setCancelable(true);
+        ListView lv=(ListView)dialog.findViewById(R.id.listView1);
+        PackageManager pm=getActivity().getPackageManager();
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"velmurugan@androidtoppers.com"});
+        email.putExtra(Intent.EXTRA_SUBJECT, "Hi");
+        email.putExtra(Intent.EXTRA_TEXT, "Hi,This is Test");
+        email.setType("text/plain");
+        List<ResolveInfo> launchables=pm.queryIntentActivities(email, 0);
+
+        Collections.sort(launchables,
+                new ResolveInfo.DisplayNameComparator(pm));
+
+        adapter=new AppAdapter(pm, launchables);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long arg3) {
+                // TODO Auto-generated method stub
+                ResolveInfo launchable=adapter.getItem(position);
+                ActivityInfo activity=launchable.activityInfo;
+                ComponentName name=new ComponentName(activity.applicationInfo.packageName,
+                        activity.name);
+                email.addCategory(Intent.CATEGORY_LAUNCHER);
+                email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                email.setComponent(name);
+                startActivity(email);
+            }
+        });
+        dialog.show();
+
+    }
+
+
+    private class AppAdapter {
+        public AppAdapter(PackageManager pm, List<ResolveInfo> launchables) {
+        }
     }
 }
