@@ -2,9 +2,11 @@ package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -16,10 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
@@ -30,7 +34,7 @@ import java.util.Locale;
 /**
  * Created by tomasz on 15.07.2015.
  */
-public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
+public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,6 +100,9 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
             }
         });
 
+        initializeLayoutButton(rootView.findViewById(R.id.set_share_app_button),
+                getResources().getDrawable(R.drawable.share_today_sign), getString(R.string.share_app_default_name), -1);
+
         Button chooseContactButton = (Button) rootView.findViewById(R.id.settings_contact_browse_button);
         chooseContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,5 +144,33 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         }
         editor.commit();
         ((MainActivity)getActivity()).reattachAllFragments();
+    }
+
+
+    private void initializeLayoutButton(View buttonLayout, Drawable drawable, String title, Integer elements){
+
+        // Draw all button components
+        ImageView homeImageLeft = (ImageView)buttonLayout.findViewById(R.id.image_home_button);
+        homeImageLeft.setImageDrawable(drawable);
+
+        TextView homeTextView = (TextView) buttonLayout.findViewById(R.id.name_home_button);
+        homeTextView.setText(title);
+
+        TextView homeElementsRight = (TextView) buttonLayout.findViewById(R.id.text_elements_home_button);
+
+        if(elements == -1){
+            homeElementsRight.setText("");
+        }else{
+            homeElementsRight.setText(elements.toString());
+        }
+
+        buttonLayout.setOnClickListener(this);
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

@@ -15,7 +15,10 @@ import com.pum.tomasz.knowyourshare.data.MeasureUnitTypeEnum;
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
+import java.util.Date;
 import java.util.List;
+
+import static com.pum.tomasz.knowyourshare.Utilities.convertDateToString;
 
 /**
  * Created by tmaslon on 2015-08-10.
@@ -25,7 +28,7 @@ public class ShareProvider {
     public static final int CONTACT_PICKER_RESULT = 1001;
 
     Context context;
-    private ShareTypeEnum shareType;
+    private ShareTypeEnum shareType = ShareTypeEnum.ANY;
 
     public ShareProvider(Context context) {
         this.context = context;
@@ -38,15 +41,32 @@ public class ShareProvider {
         SharedPreferences prefs = context.getApplicationContext()
                 .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
 
-        String phoneNumber = prefs.getString(Preferences.KEY_PHONE_NUMBER,"");
+        switch (shareType){
+            case SMS:
+                String phoneNumber = prefs.getString(Preferences.KEY_PHONE_NUMBER,"");
 
-        Intent iSms = new Intent(Intent.ACTION_VIEW);
-        iSms.putExtra("address", phoneNumber);
-        iSms.putExtra("sms_body", message);
-        iSms.setData(Uri.fromParts("sms", phoneNumber, null));
-        //iSms.setData(Uri.parse("sms:"));
-        //iSms.setType("vnd.android-dir/mms-sms");
-        context.startActivity(iSms);
+                Intent iSms = new Intent(Intent.ACTION_VIEW);
+                iSms.putExtra("address", phoneNumber);
+                iSms.putExtra("sms_body", message);
+                iSms.setData(Uri.fromParts("sms", phoneNumber, null));
+                //iSms.setData(Uri.parse("sms:"));
+                //iSms.setType("vnd.android-dir/mms-sms");
+                context.startActivity(iSms);
+                break;
+            case ANY:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+                context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+                break;
+
+        }
+
+
+
+
 
     }
 

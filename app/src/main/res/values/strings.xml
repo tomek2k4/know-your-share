@@ -46,6 +46,9 @@
     <string name="text_message_begining">I bought:</string>
     <string name="share_today_product_string">Share today\'s products</string>
     <string name="no_items_selected_toast_string">There are no items to share</string>
+    <string name="message_title">Shopping list</string>
+    <string name="prefered_way_of_share">Way of share</string>
+    <string name="share_app_default_name">Set default share app</string>
 
 
 </resources>

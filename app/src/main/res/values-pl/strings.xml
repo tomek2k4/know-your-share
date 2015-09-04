@@ -48,6 +48,8 @@
     <string name="imperial_string">Imperialny</string>
     <string name="text_message_begining">Kupilem dzisiaj:</string>
 
+    <string name="message_title">Lista zakupów</string>
+
 
 
 </resources>

@@ -123,6 +123,41 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/settings_card_header_height"
                 android:background="@color/settings_header_background_color"
+                android:text="@string/prefered_way_of_share"
+                android:textSize="20sp"
+                android:gravity="center|center_vertical"
+                android:textColor="@color/tabDark"
+                />
+
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_home_fragment_unselected"
+                android:orientation="horizontal"
+                >
+
+                <include
+                    android:id="@+id/set_share_app_button"
+                    layout="@layout/home_button_layout"
+                    android:layout_height="@dimen/home_button_height"
+                    android:layout_width="fill_parent"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/settings_card_header_height"
+                android:background="@color/settings_header_background_color"
                 android:text="@string/prefered_contact_setting_header_string"
                 android:textSize="20sp"
                 android:gravity="center|center_vertical"
@@ -156,6 +191,8 @@
                     android:background="@drawable/rectangle_button_background"/>
             </RelativeLayout>
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="fill_parent"
