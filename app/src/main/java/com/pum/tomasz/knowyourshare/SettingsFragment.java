@@ -2,6 +2,7 @@ package com.pum.tomasz.knowyourshare;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +35,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import android.content.pm.ActivityInfo;
 
 import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
@@ -45,6 +50,10 @@ import java.util.Locale;
  * Created by tomasz on 15.07.2015.
  */
 public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener {
+
+
+    Intent email = new Intent(Intent.ACTION_SEND);
+    AppAdapter adapter=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -196,9 +205,10 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_app_share_chooser);
         dialog.setCancelable(true);
-        ListView lv=(ListView)dialog.findViewById(R.id.listView1);
+        ListView lv=(ListView)dialog.findViewById(R.id.share_app_list_view);
         PackageManager pm=getActivity().getPackageManager();
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"velmurugan@androidtoppers.com"});
+
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"testomir@test.com"});
         email.putExtra(Intent.EXTRA_SUBJECT, "Hi");
         email.putExtra(Intent.EXTRA_TEXT, "Hi,This is Test");
         email.setType("text/plain");
@@ -209,7 +219,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
 
         adapter=new AppAdapter(pm, launchables);
         lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                     long arg3) {
@@ -230,8 +240,38 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
     }
 
 
-    private class AppAdapter {
-        public AppAdapter(PackageManager pm, List<ResolveInfo> launchables) {
+    class AppAdapter extends ArrayAdapter<ResolveInfo> {
+        private PackageManager pm=null;
+
+        AppAdapter(PackageManager pm, List<ResolveInfo> apps) {
+            super(SettingsFragment.this.getActivity(), R.layout.dialog_app_share_item_row, apps);
+            this.pm=pm;
+        }
+
+        @Override
+        public View getView(int position, View convertView,
+                            ViewGroup parent) {
+            if (convertView==null) {
+                convertView=newView(parent);
+            }
+
+            bindView(position, convertView);
+
+            return(convertView);
+        }
+
+        private View newView(ViewGroup parent) {
+            return(getActivity().getLayoutInflater().inflate(R.layout.dialog_app_share_item_row, parent, false));
+        }
+
+        private void bindView(int position, View row) {
+            TextView label=(TextView)row.findViewById(R.id.label);
+
+            label.setText(getItem(position).loadLabel(pm));
+
+            ImageView icon=(ImageView)row.findViewById(R.id.icon);
+
+            icon.setImageDrawable(getItem(position).loadIcon(pm));
         }
     }
 }
