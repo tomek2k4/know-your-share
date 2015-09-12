@@ -128,7 +128,6 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         });
     }
 
-
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         SharedPreferences prefs = getActivity().getApplicationContext()

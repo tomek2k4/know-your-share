@@ -1,14 +1,18 @@
 package com.pum.tomasz.knowyourshare.share;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import com.pum.tomasz.knowyourshare.R;
@@ -44,7 +48,6 @@ public class ShareProvider {
 //        email.putExtra(Intent.EXTRA_TEXT, "Hi,This is Test");
 //        email.setType("text/plain");
 
-
         List<ResolveInfo> launchables=pm.queryIntentActivities(createDefaultIntent(), 0);
         Collections.sort(launchables,
                 new ResolveInfo.DisplayNameComparator(pm));
@@ -59,27 +62,50 @@ public class ShareProvider {
         SharedPreferences prefs = context.getApplicationContext()
                 .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
 
-        switch (shareType){
-            case SMS:
-                String phoneNumber = prefs.getString(Preferences.KEY_PHONE_NUMBER,"");
+        String packageName = prefs.getString(Preferences.KEY_SHARE_APP_PACKAGE_NAME, "");
+        String activityName = prefs.getString(Preferences.KEY_SHARE_APP_ACTIVITY_NAME,"");
 
-                Intent iSms = new Intent(Intent.ACTION_VIEW);
-                iSms.putExtra("address", phoneNumber);
-                iSms.putExtra("sms_body", message);
-                iSms.setData(Uri.fromParts("sms", phoneNumber, null));
-                //iSms.setData(Uri.parse("sms:"));
-                //iSms.setType("vnd.android-dir/mms-sms");
-                context.startActivity(iSms);
-                break;
-            case ANY:
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
-                context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
-                break;
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
 
+        try {
+            PackageManager pm = context.getPackageManager();
+            ApplicationInfo app = pm.getApplicationInfo(packageName, 0);
+            ComponentName componentName =new ComponentName(packageName,activityName);
+            sharingIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            sharingIntent.setComponent(componentName);
+            context.startActivity(sharingIntent);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d(Utilities.TAG, "Did not found app: " + e.getStackTrace().toString());
+            context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
         }
+
+
+//        switch (shareType){
+//            case SMS:
+//                String phoneNumber = prefs.getString(Preferences.KEY_PHONE_NUMBER,"");
+//
+//                Intent iSms = new Intent(Intent.ACTION_VIEW);
+//                iSms.putExtra("address", phoneNumber);
+//                iSms.putExtra("sms_body", message);
+//                iSms.setData(Uri.fromParts("sms", phoneNumber, null));
+//                //iSms.setData(Uri.parse("sms:"));
+//                //iSms.setType("vnd.android-dir/mms-sms");
+//                context.startActivity(iSms);
+//                break;
+//            case ANY:
+//                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+//                sharingIntent.setType("text/plain");
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
+//                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+//                context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+//                break;
+//
+//        }
 
 
     }
