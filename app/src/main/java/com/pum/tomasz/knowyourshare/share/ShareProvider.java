@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import com.pum.tomasz.knowyourshare.data.MeasureUnitTypeEnum;
 import com.pum.tomasz.knowyourshare.data.Product;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +37,21 @@ public class ShareProvider {
         this.context = context;
     }
 
+    public static List<ResolveInfo> getSupportedApps(PackageManager pm){
+
+//        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"testomir@test.com"});
+//        email.putExtra(Intent.EXTRA_SUBJECT, "Hi");
+//        email.putExtra(Intent.EXTRA_TEXT, "Hi,This is Test");
+//        email.setType("text/plain");
+
+
+        List<ResolveInfo> launchables=pm.queryIntentActivities(createDefaultIntent(), 0);
+        Collections.sort(launchables,
+                new ResolveInfo.DisplayNameComparator(pm));
+
+        return launchables;
+
+    }
 
     public void sendMessage(List<Product> products) {
         String message = composeMessage(products);
@@ -59,15 +77,18 @@ public class ShareProvider {
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
                 context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
                 break;
 
         }
 
 
+    }
 
+    private static Intent createDefaultIntent(){
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
 
-
+        return sharingIntent;
     }
 
     private String composeMessage(List<Product> products) {

@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.pum.tomasz.knowyourshare.data.Product;
@@ -57,6 +58,8 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
         Log.d(Utilities.TAG, "MainActivity on Create called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         //Open database
         if (dbOpenHelper == null) {

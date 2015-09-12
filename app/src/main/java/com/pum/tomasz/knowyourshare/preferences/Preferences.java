@@ -16,6 +16,8 @@ public class Preferences {
         public static final String KEY_LANGUAGE = "language";
         public static final String KEY_MEASUREMENT_SYSTEM = "system";
         public static final String KEY_PHONE_NUMBER = "phone";
+        public static final String KEY_SHARE_APP_PACKAGE_NAME = "share_package";
+        public static final String KEY_SHARE_APP_ACTIVITY_NAME = "share_activity";
 
 
     public enum LanguageEnum {

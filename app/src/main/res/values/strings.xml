@@ -49,6 +49,7 @@
     <string name="message_title">Shopping list</string>
     <string name="prefered_way_of_share">Way of share</string>
     <string name="share_app_default_name">Set default share app</string>
+    <string name="app_share_chooser_string">Choose your client:</string>
 
 
 </resources>

@@ -1,12 +1,11 @@
 package com.pum.tomasz.knowyourshare;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -14,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,7 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,12 +34,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import android.content.pm.ActivityInfo;
+import android.widget.Toast;
 
 import com.pum.tomasz.knowyourshare.data.MeasureUnit;
 import com.pum.tomasz.knowyourshare.preferences.Preferences;
 import com.pum.tomasz.knowyourshare.share.ShareProvider;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,8 +116,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
             }
         });
 
-        initializeLayoutButton(rootView.findViewById(R.id.set_share_app_button),
-                getResources().getDrawable(R.drawable.share_today_sign), getString(R.string.share_app_default_name), -1);
+        initializeShareAppChooserButton(rootView);
 
         Button chooseContactButton = (Button) rootView.findViewById(R.id.settings_contact_browse_button);
         chooseContactButton.setOnClickListener(new View.OnClickListener() {
@@ -166,22 +162,39 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
     }
 
 
-    private void initializeLayoutButton(View buttonLayout, Drawable drawable, String title, Integer elements){
+    private void initializeShareAppChooserButton(View rootView){
+
+        View buttonLayout = (View)rootView.findViewById(R.id.set_share_app_button);
+
+        SharedPreferences prefs = getActivity().getApplicationContext()
+                .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+
+        String packageName = prefs.getString(Preferences.KEY_SHARE_APP_PACKAGE_NAME, "");
+
+        Drawable icon = null;
+        String label = null;
+
+        try {
+            PackageManager pm = getActivity().getPackageManager();
+            ApplicationInfo app = pm.getApplicationInfo(packageName, 0);
+            icon = pm.getApplicationIcon(app);
+            label =(String) app.loadLabel(pm);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d(Utilities.TAG, "Did not found app: " + e.getStackTrace().toString());
+            icon = getResources().getDrawable(R.drawable.share_today_sign);
+            label = getString(R.string.share_app_default_name);
+        }
+
 
         // Draw all button components
         ImageView homeImageLeft = (ImageView)buttonLayout.findViewById(R.id.image_home_button);
-        homeImageLeft.setImageDrawable(drawable);
+        homeImageLeft.setImageDrawable(icon);
 
         TextView homeTextView = (TextView) buttonLayout.findViewById(R.id.name_home_button);
-        homeTextView.setText(title);
+        homeTextView.setText(label);
 
         TextView homeElementsRight = (TextView) buttonLayout.findViewById(R.id.text_elements_home_button);
-
-        if(elements == -1){
-            homeElementsRight.setText("");
-        }else{
-            homeElementsRight.setText(elements.toString());
-        }
+        homeElementsRight.setText("");
 
         buttonLayout.setOnClickListener(this);
 
@@ -197,47 +210,68 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
     private void showShareAppChooser() {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        WindowManager.LayoutParams WMLP = dialog.getWindow().getAttributes();
-        WMLP.gravity = Gravity.CENTER;
-        dialog.getWindow().setAttributes(WMLP);
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        layoutParams.gravity = Gravity.CENTER;
+        dialog.getWindow().setAttributes(layoutParams);
         dialog.getWindow().setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_app_share_chooser);
         dialog.setCancelable(true);
         ListView lv=(ListView)dialog.findViewById(R.id.share_app_list_view);
-        PackageManager pm=getActivity().getPackageManager();
 
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"testomir@test.com"});
-        email.putExtra(Intent.EXTRA_SUBJECT, "Hi");
-        email.putExtra(Intent.EXTRA_TEXT, "Hi,This is Test");
-        email.setType("text/plain");
-        List<ResolveInfo> launchables=pm.queryIntentActivities(email, 0);
 
-        Collections.sort(launchables,
-                new ResolveInfo.DisplayNameComparator(pm));
+        PackageManager pm = getActivity().getPackageManager();
 
-        adapter=new AppAdapter(pm, launchables);
+        List<ResolveInfo> supportedApps = ShareProvider.getSupportedApps(pm);
+
+
+        adapter = new AppAdapter(pm, supportedApps);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                     long arg3) {
-                // TODO Auto-generated method stub
-                ResolveInfo launchable=adapter.getItem(position);
-                ActivityInfo activity=launchable.activityInfo;
-                ComponentName name=new ComponentName(activity.applicationInfo.packageName,
-                        activity.name);
-                email.addCategory(Intent.CATEGORY_LAUNCHER);
-                email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                email.setComponent(name);
-                startActivity(email);
+
+
+
+                ResolveInfo launchable = adapter.getItem(position);
+                ActivityInfo activity = launchable.activityInfo;
+
+                //Store package name and activity name in shared preferences
+                SharedPreferences prefs = getActivity().getApplicationContext()
+                        .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                editor.putString(Preferences.KEY_SHARE_APP_PACKAGE_NAME, activity.applicationInfo.packageName);
+                editor.putString(Preferences.KEY_SHARE_APP_ACTIVITY_NAME, activity.name);
+                Log.d(Utilities.TAG, "Selected package is: " + activity.applicationInfo.packageName);
+                Log.d(Utilities.TAG, "Selected app is: " + activity.name);
+                editor.commit();
+                dialog.cancel();
+
+                ((MainActivity) getActivity()).reattachAllFragments();
+
+
+//                ComponentName name=new ComponentName(activity.applicationInfo.packageName,
+//                        activity.name);
+//                email.addCategory(Intent.CATEGORY_LAUNCHER);
+//                email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+//                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//                email.setComponent(name);
+//                startActivity(email);
             }
         });
         dialog.show();
 
+        //Get selected app and show on button
+        initializeShareAppChooserButton(getView());
+
+
+
     }
+
+
 
 
     class AppAdapter extends ArrayAdapter<ResolveInfo> {
@@ -254,9 +288,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
             if (convertView==null) {
                 convertView=newView(parent);
             }
-
             bindView(position, convertView);
-
             return(convertView);
         }
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/ll"
+        android:id="@+id/share_app_chooser_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -16,17 +16,21 @@
         >
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:id="@+id/share_app_chooser_text_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose your client:"
-            android:gravity="center_vertical"
+            android:text="@string/app_share_chooser_string"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/tabDark"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="fill_parent"
+            android:src="@android:drawable/divider_horizontal_bright"
+            android:layout_width="match_parent"
             android:layout_height="7dp"
             android:scaleType="fitXY"
             android:paddingLeft="5dp"
