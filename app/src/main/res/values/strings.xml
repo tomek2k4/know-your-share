@@ -50,6 +50,7 @@
     <string name="prefered_way_of_share">Way of share</string>
     <string name="share_app_default_name">Set default share app</string>
     <string name="app_share_chooser_string">Choose your client:</string>
+    <string name="decide_later_string">Decide later..</string>
 
 
 </resources>

@@ -52,6 +52,7 @@ public class ShareProvider {
         Collections.sort(launchables,
                 new ResolveInfo.DisplayNameComparator(pm));
 
+
         return launchables;
 
     }

@@ -217,7 +217,27 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_app_share_chooser);
         dialog.setCancelable(true);
+
         ListView lv=(ListView)dialog.findViewById(R.id.share_app_list_view);
+
+        View decideLaterView = (View) dialog.findViewById(R.id.decide_later_button_layout);
+        decideLaterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Store package name and activity name in shared preferences
+                SharedPreferences prefs = getActivity().getApplicationContext()
+                        .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                editor.putString(Preferences.KEY_SHARE_APP_PACKAGE_NAME, "ANY");
+                editor.putString(Preferences.KEY_SHARE_APP_ACTIVITY_NAME, "ANY");
+                Log.d(Utilities.TAG, "Clicked on decide later button");
+                editor.commit();
+                dialog.cancel();
+
+                ((MainActivity) getActivity()).reattachAllFragments();
+            }
+        });
 
 
         PackageManager pm = getActivity().getPackageManager();
