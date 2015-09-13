@@ -210,7 +210,6 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
                 List<Product> todayList = dbHelper.getList(ProductsListConfigurationEnum.TODAY_PRODUCTS);
                 if(todayList.size()!=0){
                     ShareProvider shareProvider = new ShareProvider(this);
-                    shareProvider.setShareType(ShareTypeEnum.ANY);
                     shareProvider.sendMessage(todayList);
                 }else{
                     Toast.makeText(this,getResources().getString(R.string.no_items_selected_toast_string), Toast.LENGTH_SHORT).show();

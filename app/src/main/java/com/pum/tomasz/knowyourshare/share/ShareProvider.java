@@ -65,11 +65,14 @@ public class ShareProvider {
 
         String packageName = prefs.getString(Preferences.KEY_SHARE_APP_PACKAGE_NAME, "");
         String activityName = prefs.getString(Preferences.KEY_SHARE_APP_ACTIVITY_NAME,"");
+        String phoneNumber = prefs.getString(Preferences.KEY_PHONE_NUMBER,"");
 
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,context.getResources().getString(R.string.message_title).toString() + " "+ convertDateToString(new Date()));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.message_title).toString() + " " + convertDateToString(new Date()));
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+        sharingIntent.putExtra("address", phoneNumber);
+
 
         try {
             PackageManager pm = context.getPackageManager();

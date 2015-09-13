@@ -257,6 +257,8 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
                 ResolveInfo launchable = adapter.getItem(position);
                 ActivityInfo activity = launchable.activityInfo;
 
+
+
                 //Store package name and activity name in shared preferences
                 SharedPreferences prefs = getActivity().getApplicationContext()
                         .getSharedPreferences(Preferences.PREFERENCES_NAME, Context.MODE_WORLD_READABLE);

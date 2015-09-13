@@ -118,7 +118,6 @@ public class ProductsFragment extends Fragment implements View.OnClickListener,
                     //Check if we have a selected items
                     if(((MyRecyclerViewAdapter)mAdapter).getSelectedItemCount() != 0){
                         ShareProvider shareProvider = new ShareProvider(getActivity());
-                        shareProvider.setShareType(ShareTypeEnum.ANY);
                         shareProvider.sendMessage(((MyRecyclerViewAdapter)mAdapter).getSelectedProducts());
                     }else{
                         Toast.makeText(getActivity(),getResources().getString(R.string.no_items_selected_toast_string), Toast.LENGTH_SHORT).show();
