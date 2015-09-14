@@ -50,6 +50,13 @@
 
     <string name="message_title">Lista zakupów</string>
 
+    <string name="prefered_way_of_share">Sposób komunikacji</string>
+    <string name="share_app_default_name">Ustaw domyślną aplikację</string>
+    <string name="app_share_chooser_string">Wybierz aplikację:</string>
+    <string name="decide_later_string">Zdecyduj później..</string>
+
+    <string name="click_back_to_exit">Naciśnij WSTECZ jeszcze raz, aby wyjść</string>
+
 
 
 </resources>

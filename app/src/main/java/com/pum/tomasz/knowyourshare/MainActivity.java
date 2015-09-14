@@ -231,7 +231,7 @@ public class MainActivity extends FragmentActivity implements TabManager.TabChan
             }
 
             this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.click_back_to_exit), Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
 
