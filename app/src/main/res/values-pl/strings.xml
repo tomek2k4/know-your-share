@@ -43,6 +43,7 @@
     <string name="english_string">angielski</string>
 
     <string name="share_today_product_string">Wyślij listę z dzisiaj</string>
+    <string name="no_items_selected_toast_string">Brak produktów do udostępnienia</string>
 
     <string name="metrical_string">Metryczny</string>
     <string name="imperial_string">Imperialny</string>

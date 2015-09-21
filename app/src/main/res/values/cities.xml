@@ -1,8 +1,0 @@
-
-    <resources>
-        <string-array name="city_names">
-            <item>Cracow</item>
-            <item>Warsaw</item>
-            <item>Gdansk</item>
-        </string-array>
-    </resources>
